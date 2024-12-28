@@ -1,6 +1,4 @@
-import type { Metadata } from "next";
 import '@/assets/styles/globals.css';
-import { APP_NAME, APP_DESCRIPTION, SERVER_URL } from "@/lib/constatnts";
 import Header from "@/components/shared/header";
 import Footer from "@/components/footer";
 
