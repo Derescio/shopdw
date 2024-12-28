@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import '@/assets/styles/globals.css'
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constatnts";
-import Header from "@/components/shared/header";
-import Footer from "@/components/shared/footer";
+
 import { ThemeProvider } from "next-themes";
 
 
@@ -35,9 +34,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+
           {children}
-          <Footer />
+
         </ThemeProvider>
       </body>
     </html>
