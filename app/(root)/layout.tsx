@@ -24,15 +24,13 @@ export default function RootLayout({
 }>) {
     return (
         <>
-            <html lang='en' suppressHydrationWarning>
-                <body className={`${inter.className}`}>
-                    <div className='flex h-screen flex-col'>
-                        <Header />
-                        <main className='flex-1 wrapper'>{children}</main>
-                        <Footer />
-                    </div>
-                </body>
-            </html>
+
+            <div className='flex h-screen flex-col'>
+                <Header />
+                <main className='flex-1 wrapper'>{children}</main>
+                <Footer />
+            </div>
+
         </>
     );
 }
