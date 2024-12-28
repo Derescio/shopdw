@@ -16,7 +16,6 @@ export default function RootLayout({
                 <main className="flex-1 wrapper">
                     {children}
                 </main>
-                test
                 <Footer />
             </div>
 
