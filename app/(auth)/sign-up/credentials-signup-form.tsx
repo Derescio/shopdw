@@ -40,6 +40,7 @@ const SignUpForm = () => {
                         type='text'
                         defaultValue={signUpDefaultValues.name}
                         autoComplete='name'
+                        placeholder='Enter Name: At least 6 characters'
                     />
                 </div>
                 <div>
@@ -62,6 +63,7 @@ const SignUpForm = () => {
                         type='password'
                         defaultValue={signUpDefaultValues.password}
                         autoComplete='current-password'
+                        placeholder='Enter Pwd: At least 6 characters'
                     />
                 </div>
                 <div>

@@ -6,6 +6,7 @@ import { signInFormSchema, signUpFormSchema } from '../validators';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { prisma } from '@/app/db/prisma';
 import { hashSync } from 'bcrypt-ts-edge';
+import { formatError } from '../utils';
 
 
 export async function signInWithCredentials(formData: FormData) {
@@ -32,6 +33,8 @@ export async function signOutUser() {
     await signOut();
 }
 
+
+//Sign up user
 export async function signUp(prevState: unknown, formData: FormData) {
     try {
         const user = signUpFormSchema.parse({
@@ -60,13 +63,18 @@ export async function signUp(prevState: unknown, formData: FormData) {
 
         return { success: true, message: 'User created successfully' };
     } catch (error) {
+        // console.log('Errors', error)
+        // console.log('Error Name', error.name);
+        // console.log('Error Code', error.code);
+        // console.log('Error Errors', error.errors);
+        // console.log('Error Meta ', error.meta?.target)
         if (isRedirectError(error)) {
             throw error;
         }
 
         return {
             success: false,
-            message: 'Something went wrong',
+            message: formatError(error),
         };
     }
 }
