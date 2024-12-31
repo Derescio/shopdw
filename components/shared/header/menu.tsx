@@ -3,7 +3,7 @@ import ModeToggle from "./mode-toglle";
 import { EllipsisVertical, ShoppingCart, UserIcon } from "lucide-react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-
+import UserButton from "./user-button";
 
 const Menu = () => {
     return (
@@ -19,11 +19,8 @@ const Menu = () => {
                             <ShoppingCart size={24} /> Cart
                         </Link>
                     </Button>
-                    <Button asChild variant='default' >
-                        <Link href='/sign-in'>
-                            <UserIcon size={24} /> Sign-in
-                        </Link>
-                    </Button>
+                    <UserButton />
+
                 </nav>
                 {/* //This navigation is hidden on desktop view and displayed on mobile view. */}
                 {/* //This nav is responsible for the cart and user icon as well as the theme toggle. */}
@@ -45,11 +42,12 @@ const Menu = () => {
                                         <ShoppingCart size={24} /> Cart
                                     </Link>
                                 </Button>
-                                <Button asChild variant='default' >
+                                <UserButton />
+                                {/* <Button asChild variant='default' >
                                     <Link href='/sign-in'>
                                         <UserIcon size={24} /> Sign-in
                                     </Link>
-                                </Button>
+                                </Button> */}
                                 <SheetDescription></SheetDescription>
                             </SheetContent>
 
