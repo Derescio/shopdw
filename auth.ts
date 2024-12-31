@@ -1,10 +1,10 @@
 import { compareSync } from 'bcrypt-ts-edge';
-import type { NextAuthConfig } from 'next-auth';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-
 import { prisma } from '@/app/db/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
+import type { NextAuthConfig } from 'next-auth';
+
 
 export const config = {
     pages: {
@@ -14,57 +14,53 @@ export const config = {
     session: {
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60,
+        //Reset to one minute for testing
+        // maxAge: 60,
     },
     adapter: PrismaAdapter(prisma),
+
     providers: [
         CredentialsProvider({
             credentials: {
-                email: {
-                    type: 'email',
-                },
+                email: { type: 'email' },
                 password: { type: 'password' },
             },
             async authorize(credentials) {
-                if (credentials == null) return null;
-
+                if (credentials == null) return null
                 // Find user in database
                 const user = await prisma.user.findFirst({
                     where: {
                         email: credentials.email as string,
-                    },
-                });
-                // Check if user exists and password is correct
-                if (user && user.password) {
-                    const isMatch = compareSync(
-                        credentials.password as string,
-                        user.password
-                    );
-                    // If password is correct, return user object
-                    if (isMatch) {
-                        return {
-                            id: user.id,
-                            name: user.name,
-                            email: user.email,
-                            role: user.role,
-                        };
+                        // password: credentials.password
                     }
+                });
+                // Check is user exists
+                if (user && user.password) {
+                    // Check if password is correct
+                    const isPasswordCorrect = compareSync(credentials.password as string, user.password)
+                    // If password is correct
+                    if (isPasswordCorrect) {
+
+                        return { id: user.id, email: user.email, name: user.name, role: user.role } as any
+                    }
+                } else {
+                    // If user does not exist or password is incorrect
+                    return null
                 }
-                // If user doesn't exist or password is incorrect, return null
-                return null;
-            },
-        }),
-    ],
+            }
+        })],
     callbacks: {
         async session({ session, user, trigger, token }: any) {
-            // Set the user id on the session
-            session.user.id = token.sub;
-            // If there is an update, set the name on the session
+            session.user.id = token.sub
+            //If there is an update, set the user name
             if (trigger === 'update') {
-                session.user.name = user.name;
+                session.user.name = user.name
             }
-            return session;
+            return session
         },
     },
-} satisfies NextAuthConfig;
+} satisfies NextAuthConfig
 
-export const { handlers, auth, signIn, signOut } = NextAuth(config);
+export const {
+    handlers, auth, signIn, signOut
+} = NextAuth(config)
