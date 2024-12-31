@@ -2,19 +2,24 @@
 // import { PrismaClient } from '@prisma/client';
 import { prisma } from '../../app/db/prisma'
 import { prismaToJSObject } from '../utils';
-import { LATEST_PRODUCTS_LIMIT } from '../constatnts';
+
 
 //Get latest product
+
 export const getLatestProducts = async () => {
-    // const prisma = new PrismaClient();
+    const totalCount = await prisma.product.count(); // Total number of products
     const products = await prisma.product.findMany({
-        take: LATEST_PRODUCTS_LIMIT,
+
         orderBy: {
-            createdAt: 'desc'
-        }
+            createdAt: "desc",
+        },
     });
-    return prismaToJSObject(products);
-}
+
+    return {
+        products: prismaToJSObject(products),
+        totalCount,
+    };
+};
 
 //Get product by slug
 export const getProductBySlug = async (slug: string) => {
