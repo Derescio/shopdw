@@ -20,11 +20,11 @@ async function seed() {
             password: await hash(sampleData.users[i].password),
         });
         console.log(
-            sampleData.users[i].password,
+            'Sample user', sampleData.users[i].password,
             await hash(sampleData.users[i].password)
         );
     }
     await prisma.user.createMany({ data: users });
-    console.log('Succesful Seeeding')
+    //console.log('Succesful Seeeding')
 }
 seed()
