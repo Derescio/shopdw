@@ -4,6 +4,7 @@ import '@/assets/styles/globals.css'
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constatnts";
 
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "@/components/ui/toaster";
 
 
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
