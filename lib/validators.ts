@@ -38,12 +38,41 @@ export const signUpFormSchema = z.object({
 
     })
 
-    //The refine function is used to add custom validation to the schema. 
-    // In this case, we are checking if the password and confirmPassword fields match.
-    //It takes a function that returns a boolean value. 
-    // If the function returns false, the validation will fail.
-    // The path option is used to specify the field that failed the validation.
-    // In this case, the path is confirmPassword.
-    // If the validation fails, the error message will be displayed.
-    // The error message is displayed in the form of an object with a message property.
-    // If the password and confirmPassword fields match, the validation will pass and the program will continue.
+//The refine function is used to add custom validation to the schema. 
+// In this case, we are checking if the password and confirmPassword fields match.
+//It takes a function that returns a boolean value. 
+// If the function returns false, the validation will fail.
+// The path option is used to specify the field that failed the validation.
+// In this case, the path is confirmPassword.
+// If the validation fails, the error message will be displayed.
+// The error message is displayed in the form of an object with a message property.
+// If the password and confirmPassword fields match, the validation will pass and the program will continue.
+
+
+
+//Schema for Cart
+export const cartItemSchema = z.object({
+    productId: z.string().min(1, 'Product is required'),
+    name: z.string().min(1, 'Name is required'),
+    slug: z.string().min(1, 'Slug is required'),
+    qty: z.number().int().nonnegative('Quantity must be a positive number'),
+    image: z.string().min(1, 'Image is required'),
+    price: z
+        .number()
+        .refine(
+            (value) => /^\d+(\.\d{2})?$/.test(Number(value).toFixed(2)),
+            'Price must have exactly two decimal places (e.g., 49.99)'
+        ),
+});
+
+
+export const insertCartSchema = z.object({
+    items: z.array(cartItemSchema),
+    itemsPrice: currency,
+    totalPrice: currency,
+    shippingPrice: currency,
+    taxPrice: currency,
+    sessionCartId: z.string().min(1, 'Session cart id is required'),
+    userId: z.string().optional().nullable(),
+});
+
