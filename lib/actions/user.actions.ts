@@ -7,7 +7,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { prisma } from '@/app/db/prisma';
 import { hash } from '../encrypt';
 import { formatError } from '../utils';
-// import { hashSync } from 'bcrypt-ts-edge';
+
 
 
 export async function signInWithCredentials(formData: FormData) {
