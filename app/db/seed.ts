@@ -25,5 +25,6 @@ async function seed() {
         );
     }
     await prisma.user.createMany({ data: users });
+    //await prisma.user.createMany({ data: sampleData.users });
 }
 seed()
