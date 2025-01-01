@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { APP_NAME } from '@/lib/constatnts';
+//import { APP_NAME } from '@/lib/constatnts';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import SignUpForm from './credentials-signup-form';
