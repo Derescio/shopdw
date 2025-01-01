@@ -5,6 +5,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
 import { addItemToCart } from '@/lib/actions/cart.actions';
 import { CartItem } from '@/types';
+import { Plus } from 'lucide-react';
 
 const AddToCart = ({ item }: { item: CartItem; }) => {
     const router = useRouter();
@@ -37,7 +38,7 @@ const AddToCart = ({ item }: { item: CartItem; }) => {
         });
     };
 
-    return <Button className='w-full' type='button' onClick={handleAddToCart}>Add To Cart</Button>;
+    return <Button className='w-full' type='button' onClick={handleAddToCart}> <Plus /> Add To Cart</Button>;
 };
 
 export default AddToCart;
