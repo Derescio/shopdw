@@ -39,7 +39,10 @@ export const config = {
                 // Check is user exists
                 if (user && user.password) {
                     // Check if password is correct
-                    const isPasswordCorrect = await compare(credentials.password as string, user.password)
+                    const isPasswordCorrect = await compare(
+                        credentials.password as string,
+                        user.password
+                    );
                     // If password is correct
                     if (isPasswordCorrect) {
 
