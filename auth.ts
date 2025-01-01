@@ -1,10 +1,9 @@
-//import { compareSync } from 'bcrypt-ts-edge';
+
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from '@/app/db/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import type { NextAuthConfig } from 'next-auth';
-// import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { compare } from './lib/encrypt';
 
@@ -85,7 +84,6 @@ export const config = {
             if (session?.user.name && trigger === 'update') {
                 token.name = session.user.name;
             }
-
             return token;
         },
         authorized({ request, auth }: any) {
