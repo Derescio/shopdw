@@ -5,8 +5,7 @@ import { prisma } from '@/app/db/prisma';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import type { NextAuthConfig } from 'next-auth';
 import { NextResponse } from 'next/server';
-//import { compare } from './lib/encrypt';
-import { compareSync } from 'bcrypt-ts-edge';
+import { compare } from './lib/encrypt';
 
 
 export const config = {
@@ -40,7 +39,7 @@ export const config = {
                 // Check is user exists
                 if (user && user.password) {
                     // Check if password is correct
-                    const isPasswordCorrect = compareSync(
+                    const isPasswordCorrect = await compare(
                         credentials.password as string,
                         user.password
                     );
