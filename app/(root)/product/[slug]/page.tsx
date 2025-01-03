@@ -1,18 +1,29 @@
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
+import { getMyCart } from '@/lib/actions/cart.actions';
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/product-price";
 // import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
 import ProductImages from "@/components/shared/product/product-images";
 import AddToCart from "@/components/shared/cart/add-to-cart";
 
-const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
-    const { slug } = await props.params;
+const ProductPage = async (
+    props: {
+        params: Promise<{ slug: string }>;
+    }
+) => {
+    const params = await props.params;
+
+    const {
+        slug
+    } = params;
+
     const product = await getProductBySlug(slug);
     if (!product) {
         notFound();
     }
+    const cart = await getMyCart();
     return (<>
 
         <section>
@@ -87,6 +98,7 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
                             {product.stock > 0 && (
                                 <div className=' flex-center'>
                                     <AddToCart
+                                        cart={cart}
                                         item={{
                                             productId: product.id,
                                             name: product.name,
