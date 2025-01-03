@@ -4,9 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { getMyCart } from '@/lib/actions/cart.actions';
 import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/product-price";
-// import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
 import ProductImages from "@/components/shared/product/product-images";
 import AddToCart from "@/components/shared/cart/add-to-cart";
+// import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
+
 
 const ProductPage = async (
     props: {
