@@ -127,7 +127,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                 <div className="text-sm text-gray-600">Review your items before checking out!</div>
                             </div>
                             <Button
-                                onClick={() => startTransition(() => router.push('/shipping-address'))}
+                                onClick={() => startTransition(() => router.push('/shipping'))}
                                 className="w-full"
                                 disabled={isPending}
                             >
