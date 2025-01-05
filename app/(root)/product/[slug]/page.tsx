@@ -9,6 +9,7 @@ import AddToCart from "@/components/shared/cart/add-to-cart";
 // import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
 
 
+
 const ProductPage = async (
     props: {
         params: Promise<{ slug: string }>;

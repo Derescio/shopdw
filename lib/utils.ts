@@ -14,8 +14,8 @@ export function prismaToJSObject<T>(obj: T): T {
 //Format Number with decimal places
 
 export function formatNumber(num: number): string {
-  const [int, decimal] = num.toString().split(".")
-  return decimal ? `${int}.${decimal.padEnd(2, '0')}` : `${int}.00`
+  const [int, decimal] = num.toFixed(2).split(".")
+  return `${int}.${decimal}`
 }
 
 //Round Numbers to 2 decimal places
@@ -26,6 +26,23 @@ export function roundNumber(value: number | string) {
     return Math.round((Number(value) + Number.EPSILON) * 100) / 100
   } else {
     throw new Error('Value must be a number or string')
+  }
+}
+
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+  currency: 'USD',
+  style: 'currency',
+  minimumFractionDigits: 2,
+});
+
+// Format currency
+export function formatCurrency(amount: number | string | null) {
+  if (typeof amount === 'number') {
+    return CURRENCY_FORMATTER.format(amount);
+  } else if (typeof amount === 'string') {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return 'NaN';
   }
 }
 

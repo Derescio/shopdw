@@ -8,6 +8,11 @@ import { Cart, CartItem } from '@/types';
 import { Plus, Minus, Loader } from 'lucide-react';
 import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
 
+
+
+
+
+
 const AddToCart = ({
     cart,
     item,
