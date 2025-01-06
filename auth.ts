@@ -75,12 +75,13 @@ export const config = {
                 if (trigger === 'signIn' || trigger === 'signUp') {
                     const cookiesObject = await cookies();
                     const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+                    //console.log(sessionCartId)
 
                     if (sessionCartId) {
                         const sessionCart = await prisma.cart.findFirst({
                             where: { sessionCartId },
                         });
-
+                        //console.log(sessionCart)
                         if (sessionCart) {
                             // Overwrite any existing user cart
                             await prisma.cart.deleteMany({
