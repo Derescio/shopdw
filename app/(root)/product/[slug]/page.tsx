@@ -6,9 +6,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import ProductPrice from "@/components/shared/product/product-price";
 import ProductImages from "@/components/shared/product/product-images";
 import AddToCart from "@/components/shared/cart/add-to-cart";
+import { Metadata } from "next";
 // import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
 
 
+
+
+export const metadata: Metadata = {
+    title: 'Products Page',
+    description: 'Products Page',
+};
 
 const ProductPage = async (
     props: {
