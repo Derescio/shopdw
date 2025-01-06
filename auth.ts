@@ -5,6 +5,8 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import type { NextAuthConfig } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { compareSync } from 'bcrypt-ts-edge';
+import { cookies } from 'next/headers';
+import { NextURL } from 'next/dist/server/web/next-url';
 
 
 export const config = {
@@ -67,6 +69,7 @@ export const config = {
         async jwt({ token, user, trigger, session }: any) {
             // Assign user fields to token
             if (user) {
+                token.id = user.id;
                 token.role = user.role;
 
 
@@ -80,6 +83,34 @@ export const config = {
                         data: { name: token.name },
                     });
                 }
+                // This if statement enures that guest cart items are available after they sign in
+                if (trigger === 'signIn' || trigger === 'signUp') {
+                    const cookiesObject = await cookies();
+                    const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+
+                    if (sessionCartId) {
+                        const cart = await prisma.cart.findFirst({
+                            where: {
+                                sessionCartId
+                            }
+                        });
+                        if (cart) {
+                            await prisma.cart.deleteMany({
+                                where: {
+                                    userId: user.id
+                                }
+                            });
+                            await prisma.cart.update({
+                                where: { id: sessionCartId },
+                                data: {
+                                    userId: user.id
+                                }
+                            });
+                        }
+                    }
+
+
+                }
             }
 
             // Handle session updates (e.g., name change)
@@ -89,6 +120,26 @@ export const config = {
             return token;
         },
         authorized({ request, auth }: any) {
+            // If the user is not authenticated, redirect to the sign-in page. Array of regex patterns to exclude from the redirect
+            const excludedPaths = [
+                /\/shipping/,
+                /\/payment-method/,
+                /\/place-order/,
+                /\/profile/,
+                /\/user\/(.*)/,
+                /\/order\/(.*)/,
+                /\/admin/,
+            ]
+            // Check if the request path matches any of the excluded paths. Req URL OBject
+            const pathname = request?.nextUrl?.pathname;
+            // console.log(pathname)
+            // const { pathname } = request?.nextUrl?.pathname;
+            if (!auth && excludedPaths.some((p) => p.test(pathname))) return false;
+            //Check if user is not authenticated and the path is  excluded
+            // if (!auth?.user && !excludedPaths.some(pattern => pattern.test(pathname))) {
+            //     return false;
+            // }
+
             // Check for session cart cookie
             if (!request.cookies.get('sessionCartId')) {
                 //Generate a new session cart id cookie
