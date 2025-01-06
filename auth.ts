@@ -100,8 +100,9 @@ export const config = {
                                     userId: user.id
                                 }
                             });
+                            // Causing SIgnIn Error
                             await prisma.cart.update({
-                                where: { id: sessionCartId },
+                                where: { id: cart.id },
                                 data: {
                                     userId: user.id
                                 }
