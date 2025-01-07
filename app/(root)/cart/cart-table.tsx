@@ -26,9 +26,12 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
         <h1 className="py-4 h2-bold">Shopping Cart has {itemText} </h1>
         {!cart || cart.items.length === 0 ? (
             <div>
-                <p className="text-center">Your cart is empty</p>
+                <p className="text-center mb-4">Your cart is empty.!</p>
                 <div className="flex-center">
-                    <Link href="/"><span className="btn btn-primary">Continue Shopping</span></Link>
+                    <Button variant={'outline'} className="bg-gray-300">
+                        <Link href="/"><span className="btn btn-primary">More Products</span></Link>
+                    </Button>
+
                 </div>
             </div>
         ) : (
