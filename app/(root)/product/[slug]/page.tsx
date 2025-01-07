@@ -112,7 +112,7 @@ const ProductPage = async (
                                             productId: product.id,
                                             name: product.name,
                                             slug: product.slug,
-                                            price: Number(product.price),
+                                            price: product.price,
                                             qty: 1,
                                             image: product.images![0],
                                         }}
