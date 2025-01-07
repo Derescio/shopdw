@@ -8,7 +8,8 @@ import { prisma } from '@/app/db/prisma';
 import { formatError } from '../utils';
 import { hashSync } from 'bcrypt-ts-edge';
 import { ShippingAddress } from '@/types';
-
+import { paymentMethodSchema } from '../validators';
+import { z } from 'zod';
 
 
 export async function signInWithCredentials(formData: FormData) {
@@ -121,5 +122,32 @@ export async function updateUserAddress(data: ShippingAddress) {
             success: false,
             message: formatError(error),
         };
+    }
+}
+
+// Update user's payment method
+export async function updateUserPaymentMethod(
+    data: z.infer<typeof paymentMethodSchema>
+) {
+    try {
+        const session = await auth();
+        const currentUser = await prisma.user.findFirst({
+            where: { id: session?.user?.id },
+        });
+        if (!currentUser) throw new Error('User not found');
+
+        const paymentMethod = paymentMethodSchema.parse(data);
+
+        await prisma.user.update({
+            where: { id: currentUser.id },
+            data: { paymentMethod: paymentMethod.type },
+        });
+
+        return {
+            success: true,
+            message: 'User updated successfully',
+        };
+    } catch (error) {
+        return { success: false, message: formatError(error) };
     }
 }

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { formatNumber } from './utils';
-
+import { PAYMENT_METHODS } from '@/lib/constatnts'
 
 //Schema for inserting products
 const currency = z.string().refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
@@ -88,3 +88,14 @@ export const shippingAddressSchema = z.object({
     lat: z.number().optional(),
     lng: z.number().optional(),
 });
+
+//Schema for payment methods
+//Payment Schema
+export const paymentMethodSchema = z
+    .object({
+        type: z.string().min(1, 'Pyament method is required'),
+    })
+    .refine((data) => PAYMENT_METHODS.includes(data.type), {
+        path: ['type'],
+        message: 'Select payment method',
+    });

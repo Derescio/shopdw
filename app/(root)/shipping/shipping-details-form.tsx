@@ -43,7 +43,7 @@ const ShippingDetailsForm = ({ address }: { address: ShippingAddress }) => {
                     description: 'Shipping address updated successfully',
                     variant: 'default',
                 });
-                router.push('/checkout');
+                router.push('/payment-method');
             } else {
                 toast({
                     title: 'Error',
