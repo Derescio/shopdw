@@ -29,7 +29,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                 <p className="text-center mb-4">Your cart is empty.!</p>
                 <div className="flex-center">
                     <Button variant={'outline'} className="bg-gray-300">
-                        <Link href="/"><span className="btn btn-primary">More Products</span></Link>
+                        <Link href="/"><span className="btn btn-primary">Go to Products</span></Link>
                     </Button>
 
                 </div>

@@ -11,9 +11,19 @@ const CartPage = async () => {
     const cart = await getMyCart();
 
 
+
     return (<>
         <CartTable cart={cart} />
-        <DeleteCart />
+        {/* Disable DeleteCart is cart variable is undefined or null */}
+        {cart?.items.length === 0 || cart === undefined ? (
+            <div className="flex justify-center mt-10 display:none">
+
+            </div>
+        ) : (<div className="flex justify-center mt-10 display:block">
+            <DeleteCart />
+        </div>)}
+
+        {/* <DeleteCart /> */}
     </>);
 }
 
