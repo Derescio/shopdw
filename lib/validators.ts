@@ -58,13 +58,11 @@ export const cartItemSchema = z.object({
     slug: z.string().min(1, 'Slug is required'),
     qty: z.number().int().nonnegative('Quantity must be a positive number'),
     image: z.string().min(1, 'Image is required'),
-    // price: z
-    //     .number()
-    //     .refine(
-    //         (value) => /^\d+(\.\d{2})?$/.test(Number(value).toFixed(2)),
-    //         'Price must have exactly two decimal places (e.g., 49.99)'
-    //     ),
-    price: currency
+    price: z
+        .number()
+        .refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
+            'Price must be a number and have 2 decimal places')
+
 });
 
 
