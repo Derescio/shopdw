@@ -58,12 +58,13 @@ export const cartItemSchema = z.object({
     slug: z.string().min(1, 'Slug is required'),
     qty: z.number().int().nonnegative('Quantity must be a positive number'),
     image: z.string().min(1, 'Image is required'),
-    price: z
-        .number()
-        .refine(
-            (value) => /^\d+(\.\d{2})?$/.test(Number(value).toFixed(2)),
-            'Price must have exactly two decimal places (e.g., 49.99)'
-        ),
+    // price: z
+    //     .number()
+    //     .refine(
+    //         (value) => /^\d+(\.\d{2})?$/.test(Number(value).toFixed(2)),
+    //         'Price must have exactly two decimal places (e.g., 49.99)'
+    //     ),
+    price: currency
 });
 
 
@@ -93,7 +94,7 @@ export const shippingAddressSchema = z.object({
 //Payment Schema
 export const paymentMethodSchema = z
     .object({
-        type: z.string().min(1, 'Pyament method is required'),
+        type: z.string().min(1, 'Payment method is required'),
     })
     .refine((data) => PAYMENT_METHODS.includes(data.type), {
         path: ['type'],
