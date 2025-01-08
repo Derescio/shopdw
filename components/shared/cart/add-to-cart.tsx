@@ -8,11 +8,6 @@ import { Cart, CartItem } from '@/types';
 import { Plus, Minus, Loader } from 'lucide-react';
 import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
 
-
-
-
-
-
 const AddToCart = ({
     cart,
     item,
@@ -20,13 +15,9 @@ const AddToCart = ({
     cart?: Cart;
     item: Omit<CartItem, 'cartId'>;
 }) => {
-
-
     const router = useRouter();
     const { toast } = useToast();
     const [isPending, startTransition] = useTransition();
-
-
     const handleAddToCart = async () => {
         startTransition(async () => {
 

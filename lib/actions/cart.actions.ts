@@ -118,8 +118,6 @@ export async function addItemToCart(data: CartItem) {
 // This function will take in a variable called data of type CartItem as its shape
 
 
-
-
 export async function getMyCart() {
     const sessionCartId = (await cookies()).get('sessionCartId')?.value;
     if (!sessionCartId) {
@@ -204,14 +202,7 @@ export async function deleteCart() {
         // Get the session Id
         const session = await auth();
         console.log(session?.user?.id)
-        // const cart = await prisma.cart.findUnique({
-        //     where: { id: sessionCartId },
-        // });
-        // console.log(cart)
-        // 4b09bf28-07c5-4ae5-9802-6102b563e0b4
-        // if (!cart) throw new Error('Cart not found');
 
-        // Delete the cart from the database
         await prisma.cart.delete({
             where: { id: cartItems?.id },
         });
