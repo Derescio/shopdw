@@ -3,6 +3,7 @@ import { getOrder } from "@/lib/actions/order-actions";
 import { formatDateTime, formatCurrency, formatId } from "@/lib/utils";
 import Link from "next/link";
 import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
+import Pagination from '@/components/shared/pagination';
 
 
 
@@ -18,6 +19,8 @@ const OrdersPage = async (props: {
     const { page } = await props.searchParams;
     const orders = await getOrder({ page: Number(page) || 1 });
     // console.log(orders)
+
+
     return (<>
         <div className="space-y-2">
             <h2 className="h2-bold">Orders</h2>
@@ -48,6 +51,11 @@ const OrdersPage = async (props: {
                         ))}
                     </TableBody>
                 </Table>
+                {
+                    orders.totalPages > 1 && (
+                        <Pagination page={Number(page) || 1} totalPages={orders?.totalPages} />
+                    )
+                }
             </div>
         </div>
     </>);
