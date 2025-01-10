@@ -6,7 +6,7 @@ import type { NextAuthConfig } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { compareSync } from 'bcrypt-ts-edge';
 import { cookies } from 'next/headers';
-import { NextURL } from 'next/dist/server/web/next-url';
+
 
 
 export const config = {
@@ -69,7 +69,7 @@ export const config = {
         async jwt({ token, user, trigger, session }: any) {
             if (user) {
                 // Assign user properties to the token
-                token.id = user.id;
+                //token.id = user.id;
                 token.role = user.role;
 
                 if (trigger === 'signIn' || trigger === 'signUp') {
@@ -97,9 +97,65 @@ export const config = {
                     }
                 }
             }
-
+            // Handle Session Update
+            if (session?.user.name && trigger === 'update') {
+                token.name = session.user.name
+            }
             return token;
         },
+
+
+
+
+        // async jwt({ token, user, trigger, session }: any) {
+        //     // Assign user fields to token
+        //     if (user) {
+        //         token.id = user.id;
+        //         token.role = user.role;
+
+        //         // If user has no name then use the email
+        //         if (user.name === 'NO_NAME') {
+        //             token.name = user.email!.split('@')[0];
+
+        //             // Update database to reflect the token name
+        //             await prisma.user.update({
+        //                 where: { id: user.id },
+        //                 data: { name: token.name },
+        //             });
+        //         }
+
+        //         if (trigger === 'signIn' || trigger === 'signUp') {
+        //             const cookiesObject = await cookies();
+        //             const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+
+        //             if (sessionCartId) {
+        //                 const sessionCart = await prisma.cart.findFirst({
+        //                     where: { sessionCartId },
+        //                 });
+
+        //                 if (sessionCart) {
+        //                     // Delete current user cart
+        //                     await prisma.cart.deleteMany({
+        //                         where: { userId: user.id },
+        //                     });
+
+        //                     // Assign new cart
+        //                     await prisma.cart.update({
+        //                         where: { id: sessionCart.id },
+        //                         data: { userId: user.id },
+        //                     });
+        //                 }
+        //             }
+        //         }
+        //     }
+
+        //     // Handle session updates
+        //     if (session?.user.name && trigger === 'update') {
+        //         token.name = session.user.name;
+        //     }
+
+        //     return token;
+        // },
         authorized({ request, auth }: any) {
             // If the user is not authenticated, redirect to the sign-in page. Array of regex patterns to exclude from the redirect
             const excludedPaths = [
