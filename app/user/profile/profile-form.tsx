@@ -18,8 +18,11 @@ import { updateUserProfile } from '@/lib/actions/user.actions';
 import { updateUserSchema } from '@/lib/validators';
 
 
+
 const ProfileForm = () => {
+
     const { data: session, update } = useSession();
+
 
     const { toast } = useToast();
     const form = useForm<z.infer<typeof updateUserSchema>>({
@@ -46,9 +49,9 @@ const ProfileForm = () => {
                 name: values.name,
             },
         };
-        //(session as any).user.name = values.name;
+
         await update(newSession);
-        // revalidatePath('/profile');
+
 
         toast({
             description: res.message,

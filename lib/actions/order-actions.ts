@@ -310,3 +310,14 @@ export async function getOrder({ limit = PAGE_SIZE, page }: { limit?: number, pa
     };
 }
 
+// Get Sales Data and Order Summary
+export async function getOrderSummary() {
+    //Get Count for each resource(Product, Category, User, Order)
+    const orderCount = await prisma.order.count();
+    const productCount = await prisma.product.count();
+    const userCount = await prisma.user.count();
+    //Calculate Total Sales
+
+    //Get Sales Data(Revenue)
+    //Get Lastest Sales
+}
