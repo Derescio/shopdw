@@ -11,6 +11,7 @@ import { CartItem, PaymentResult } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { paypal } from '../paypal';
 import { PAGE_SIZE } from '../constatnts';
+import { Prisma } from '@prisma/client';
 
 
 
@@ -310,14 +311,181 @@ export async function getOrder({ limit = PAGE_SIZE, page }: { limit?: number, pa
     };
 }
 
+
+type SalesDataType = {
+    month: string;
+    totalSales: number;
+}[]
+
 // Get Sales Data and Order Summary
 export async function getOrderSummary() {
     //Get Count for each resource(Product, Category, User, Order)
     const orderCount = await prisma.order.count();
     const productCount = await prisma.product.count();
     const userCount = await prisma.user.count();
+
     //Calculate Total Sales
+    const totalSales = await prisma.order.aggregate({
+        _sum: {
+            totalPrice: true,
+        },
+    });
+
+
+    // Calculate Toatl CostPrce
+    const totalProfit = async () => {
+        // Aggregate all sales data
+        const sales = await prisma.orderItem.aggregate({
+            _sum: {
+                price: true, // Total sales revenue
+                qty: true,   // Total quantity sold
+            },
+        });
+
+        // Join products to calculate the total cost
+        const costData = await prisma.orderItem.findMany({
+            include: {
+                product: {
+                    select: {
+                        costPrice: true, // Product costPrice
+                    },
+                },
+            },
+        });
+        //console.log(sales);
+
+
+        // Calculate the total cost
+        const totalCost = costData.reduce((sum, item) => {
+            return sum + item.qty * item.product.costPrice.toNumber();
+        }, 0);
+
+        // Calculate profit
+        const totalRevenue = sales._sum.price?.toString() || 0;
+        const profit = Number(totalRevenue) - totalCost;
+
+        return {
+            totalRevenue,
+            totalCost,
+            profit,
+        };
+    };
+
+    // Example usage
+    const result = await totalProfit();
+    //console.log("Total Profit:", result);
+
+
+
+    const profitBySKU = async () => {
+        // Get aggregated data grouped by productId (SKU)
+        const salesData = await prisma.orderItem.groupBy({
+            by: ['productId'],
+            _sum: {
+                qty: true,
+                price: true,
+            },
+        });
+
+        // Fetch cost prices for the SKUs
+        const productData = await prisma.product.findMany({
+            select: {
+                id: true,
+                costPrice: true,
+            },
+        });
+
+        // Map product costs
+        const costMap = productData.reduce((map, product) => {
+            map[product.id] = product.costPrice.toNumber();
+            return map;
+        }, {} as Record<string, number>);
+
+        // Calculate profit for each SKU
+        const profitDetails = salesData.map((item) => {
+            const totalCost = (item._sum.qty || 0) * (costMap[item.productId] || 0);
+            const totalRevenue = item._sum.price?.toString() || 0;
+            return {
+                productId: item.productId,
+                totalRevenue,
+                totalCost,
+                profit: Number(totalRevenue) - totalCost,
+            };
+        });
+
+        return profitDetails;
+    };
+
+    // Example usage
+    const skuProfits = await profitBySKU();
+    // console.log("Profit by SKU:", skuProfits);
+
 
     //Get Sales Data(Revenue)
+    const salesDataRaw = await prisma.$queryRaw<
+        Array<{ month: string; totalSales: Prisma.Decimal }>
+    >`SELECT to_char("createdAt", 'MM/YY') as "month", sum("totalPrice") as "totalSales" FROM "Order" GROUP BY to_char("createdAt", 'MM/YY')`;
+
+    const salesData: SalesDataType = salesDataRaw.map((entry) => ({
+        month: entry.month,
+        totalSales: Number(entry.totalSales), // Convert Decimal to number
+    }));
     //Get Lastest Sales
+    const latestOrders = await prisma.order.findMany({
+        orderBy: { createdAt: 'desc' },
+        include: {
+            user: { select: { name: true } },
+        },
+        take: 6,
+    });
+
+    return {
+        orderCount,
+        productCount,
+        userCount,
+        totalSales,
+        latestOrders,
+        salesData,
+        skuProfits,
+        result,
+    };
+}
+
+// Get All Orders (Admin)
+export async function getAllOrders({
+    limit = PAGE_SIZE,
+    page,
+}: {
+    limit?: number;
+    page: number;
+}) {
+    const data = await prisma.order.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        skip: (page - 1) * limit,
+        include: { user: { select: { name: true } } },
+    });
+
+    const dataCount = await prisma.order.count();
+
+    return {
+        data,
+        totalPages: Math.ceil(dataCount / limit),
+    };
+}
+
+
+export async function deleteOrder(id: string) {
+    try {
+        await prisma.order.delete({ where: { id } });
+
+        revalidatePath('/admin/orders');
+
+        return {
+            success: true,
+            message: 'Order deleted successfully',
+        };
+    } catch (error) {
+        return { success: false, message: formatError(error) };
+    }
 }

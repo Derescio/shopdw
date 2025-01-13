@@ -84,6 +84,11 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 2,
 });
 
+const NUMBER_FORMATTER = new Intl.NumberFormat('en-US');
+export function formatNumberIntl(number: number) {
+  return NUMBER_FORMATTER.format(number);
+}
+
 // Format currency
 export function formatCurrency(amount: number | string | null) {
   if (typeof amount === 'number') {
@@ -117,6 +122,7 @@ export function formUrlQuery({
     { skipNull: true }
   );
 }
+
 
 
 //Format Errors

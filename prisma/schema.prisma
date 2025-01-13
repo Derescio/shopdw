@@ -22,6 +22,8 @@ model Product {
   numReviews  Int         @default(0)
   isFeatured  Boolean     @default(false)
   banner      String?
+  costPrice   Decimal     @default(0) @db.Decimal(12, 2)
+  sku         String
   createdAt   DateTime    @default(now()) @db.Timestamp(6)
   OrderItem   OrderItem[]
 }

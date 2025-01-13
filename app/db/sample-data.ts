@@ -31,7 +31,8 @@ const sampleData = {
       stock: 5,
       isFeatured: true,
       banner: 'banner-1.jpg',
-
+      costPrice: 20.00,
+      sku: "PO-STRETCH-SHIRT-123"
     },
     {
       name: 'Brooks Brothers Long Sleeved Shirt',
@@ -49,7 +50,8 @@ const sampleData = {
       stock: 10,
       isFeatured: true,
       banner: 'banner-2.jpg',
-
+      costPrice: 20.00,
+      sku: "BB-LS-SHIRT-123"
     },
     {
       name: 'Tommy Hilfiger Classic Fit Dress Shirt',
@@ -67,7 +69,8 @@ const sampleData = {
       stock: 0,
       isFeatured: false,
       banner: null,
-
+      costPrice: 20.00,
+      sku: "TH-CLASSIC-SHIRT-123"
     },
     {
       name: 'Calvin Klein Slim Fit Stretch Shirt',
@@ -85,7 +88,8 @@ const sampleData = {
       stock: 10,
       isFeatured: false,
       banner: null,
-
+      costPrice: 20.00,
+      sku: "CK-SLIMFIT-SHIRT-123"
     },
     {
       name: 'Polo Ralph Lauren Oxford Shirt',
@@ -103,7 +107,8 @@ const sampleData = {
       stock: 6,
       isFeatured: false,
       banner: null,
-
+      costPrice: 20.00,
+      sku: "PO-RL-OXFORD-SHIRT-123"
     },
     {
       name: 'Polo Classic Pink Hoodie',
@@ -121,7 +126,8 @@ const sampleData = {
       stock: 8,
       isFeatured: true,
       banner: null,
-
+      costPrice: 20.00,
+      sku: "PO-HOODIE-PINK-123"
     },
   ],
 };
