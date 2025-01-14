@@ -4,6 +4,7 @@ export const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhos
 export const LATEST_PRODUCTS_LIMIT = Number(process.env.LATEST_PRODUCTS_LIMIT) || 4;
 export const signInDefaultValues = { email: '', password: '' };
 export const signUpDefaultValues = { name: '', email: '', password: '', confirmPassword: '' };
+
 export const shippingAddressDefaultValues = {
     fullName: '',
     streetAddress: '',
@@ -11,6 +12,7 @@ export const shippingAddressDefaultValues = {
     postalCode: '',
     country: '',
 };
+
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
     ? process.env.PAYMENT_METHODS.split(', ')
     : ['PayPal', 'Credit Card', 'COD'];

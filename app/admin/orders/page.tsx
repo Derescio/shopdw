@@ -1,6 +1,5 @@
 import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
-//import { Pagination } from '@/components/ui/pagination';
 import Pagination from '@/components/shared/pagination';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getAllOrders, deleteOrder } from '@/lib/actions/order-actions';
@@ -25,8 +24,6 @@ const AdminOrdersPage = async (props: {
     const orders = await getAllOrders({
         page: Number(page),
     });
-
-
 
     return (
         <div className='space-y-2'>
@@ -61,16 +58,11 @@ const AdminOrdersPage = async (props: {
                                         ? formatDateTime(order.deliveredAt).dateTime
                                         : 'Not Delivered'}
                                 </TableCell>
-                                <TableCell>
-                                    {/* <Button asChild variant='outline' size='sm'>
+                                <TableCell className='flex gap-1'>
+                                    <Button asChild variant='outline' size='sm'>
                                         <Link href={`/order/${order.id}`}>Details</Link>
-                                    </Button> */}
-                                    <TableCell className='flex gap-1'>
-                                        <Button asChild variant='outline' size='sm'>
-                                            <Link href={`/order/${order.id}`}>Details</Link>
-                                        </Button>
-                                        <DeleteDialog id={order.id} action={deleteOrder} />
-                                    </TableCell>
+                                    </Button>
+                                    <DeleteDialog id={order.id} action={deleteOrder} />
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -277,6 +277,45 @@ async function updateOrderToPaid({
 };
 
 
+export async function updateOrderToPaidByCOD(orderId: string) {
+    try {
+        await updateOrderToPaid({ orderId });
+        revalidatePath(`/order/${orderId}`);
+        return { success: true, message: 'Order paid successfully' };
+    } catch (err) {
+        return { success: false, message: formatError(err) };
+    }
+}
+
+// Update COD Order To Delivered
+export async function deliverOrder(orderId: string) {
+    try {
+        const order = await prisma.order.findFirst({
+            where: {
+                id: orderId,
+            },
+        });
+
+        if (!order) throw new Error('Order not found');
+        if (!order.isPaid) throw new Error('Order is not paid');
+
+        await prisma.order.update({
+            where: { id: orderId },
+            data: {
+                isDelivered: true,
+                deliveredAt: new Date(),
+            },
+        });
+
+        revalidatePath(`/order/${orderId}`);
+
+        return { success: true, message: 'Order delivered successfully' };
+    } catch (err) {
+        return { success: false, message: formatError(err) };
+    }
+}
+
+
 //Fetch Orders
 export async function getOrder({ limit = PAGE_SIZE, page }: { limit?: number, page: number }) {
     const session = await auth();
