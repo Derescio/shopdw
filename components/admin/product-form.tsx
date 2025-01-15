@@ -12,6 +12,10 @@ import slugify from "slugify";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { createProduct, updateProduct } from "@/lib/actions/product.actions";
+import { Button } from "../ui/button";
+import { UploadButton } from "@/lib/uploadthing";
+import { Card, CardContent } from "../ui/card";
+import Image from "next/image";
 
 const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', product?: Product, productId?: string }) => {
 
@@ -58,6 +62,7 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
             }
         }
     };
+    const images = form.watch('images');
     return (<>
         <Form {...form}>
             <form className='space-y-8' method='post' onSubmit={form.handleSubmit(onSubmit)}>
@@ -98,15 +103,15 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                                             className='pl-8'
                                             {...field}
                                         />
-                                        <button
+                                        <Button
                                             type='button'
-                                            className='bg-gray-500 text-white px-4 py-1 mt-2 hover:bg-gray-600'
+                                            className='bg-gray-700 text-white px-4 py-1 mt-2 hover:bg-gray-600'
                                             onClick={() => {
                                                 form.setValue('slug', slugify(form.getValues('name'), { lower: true }));
                                             }}
                                         >
                                             Generate
-                                        </button>
+                                        </Button>
                                     </div>
                                 </FormControl>
                                 <FormMessage />
@@ -249,7 +254,46 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                     />
                 </div>
                 <div className='upload-field flex flex-col gap-5 md:flex-row'>
-                    {/* Images */}
+                    <FormField
+                        control={form.control}
+                        name='images'
+                        render={() => (
+                            <FormItem className='w-full'>
+                                <FormLabel>Images</FormLabel>
+                                <Card>
+                                    <CardContent className='space-y-2 mt-2 min-h-48'>
+                                        <div className='flex-start space-x-2'>
+                                            {images.map((image: string) => (
+                                                <Image
+                                                    key={image}
+                                                    src={image}
+                                                    alt='product image'
+                                                    className='w-20 h-20 object-cover object-center rounded-sm'
+                                                    width={100}
+                                                    height={100}
+                                                />
+                                            ))}
+                                            <FormControl>
+                                                <UploadButton
+                                                    endpoint='imageUploader'
+                                                    onClientUploadComplete={(res: { url: string }[]) => {
+                                                        form.setValue('images', [...images, res[0].url]);
+                                                    }}
+                                                    onUploadError={(error: Error) => {
+                                                        toast({
+                                                            variant: 'destructive',
+                                                            description: `ERROR! ${error.message}`,
+                                                        });
+                                                    }}
+                                                />
+                                            </FormControl>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
                 </div>
                 <div className='upload-field'>{/* Is Featured */}</div>
                 <div> <FormField
@@ -279,12 +323,13 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                 <div>
                     {/* Submit */}
                     <div className='flex justify-end'>
-                        <button
+                        <Button
                             type='submit'
-                            className='bg-primary text-white px-4 py-2 hover:bg-primary-dark'
+                            className='bg-primary text-white px-4 py-2 hover:bg-primary-dark '
+                            disabled={form.formState.isSubmitting}
                         >
                             {type === 'create' ? 'Create' : 'Update'}
-                        </button>
+                        </Button>
                     </div>
 
 
