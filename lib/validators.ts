@@ -16,8 +16,18 @@ export const insertProductSchema = z.object({
     images: z.array(z.string()).min(1, 'At least one image is required'),
     isFeatured: z.boolean(),
     banner: z.string().nullable(),
-    price: currency
+    price: currency,
+    sku: z.string().min(3, 'SKU must be at least 3 characters').max(255),
+    costPrice: currency,
 });
+
+
+//Update product schema
+export const updateProductSchema = insertProductSchema.extend({
+    id: z.string().min(1, 'Id is required'),
+    // images: z.array(z.string()).min(1, 'At least one image is required'),
+})
+
 
 //Schema for signing up users
 export const signInFormSchema = z.object({

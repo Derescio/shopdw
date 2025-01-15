@@ -14,6 +14,7 @@ const HomePage = async () => {
         data={products.map((product) => ({
           ...product,
           price: product.price.toString(),
+          costPrice: product.price.toString(),
           rating: product.rating.toString(),
         }))}
         title="Newest Arrivals"
