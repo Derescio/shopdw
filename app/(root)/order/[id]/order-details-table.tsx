@@ -28,7 +28,7 @@ import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
 import { Order } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 
 
@@ -55,6 +55,8 @@ const OrderDetailsTable = ({ order,
     } = order;
 
     const { toast } = useToast();
+
+
     function PrintLoadingState() {
         const [{ isPending, isRejected }] = usePayPalScriptReducer();
         let status = '';
@@ -92,6 +94,7 @@ const OrderDetailsTable = ({ order,
             onClick={() =>
                 startTransition(async () => {
                     const res = await updateOrderToPaidByCOD(order.id);
+
                     toast({
                         variant: res.success ? 'default' : 'destructive',
                         description: res.message,
@@ -102,25 +105,30 @@ const OrderDetailsTable = ({ order,
             {isPending ? 'processing...' : 'Mark As Paid'}
         </Button>
     }
+
     const MarkAsDeliveredButton = () => {
         const [isPending, startTransition] = useTransition();
         const { toast } = useToast();
+
         return (
-            <Button
-                type='button'
-                disabled={isPending}
-                onClick={() =>
-                    startTransition(async () => {
-                        const res = await deliverOrder(order.id);
-                        toast({
-                            variant: res.success ? 'default' : 'destructive',
-                            description: res.message,
-                        });
-                    })
-                }
-            >
-                {isPending ? 'processing...' : 'Mark As Delivered'}
-            </Button>
+            <>
+                <Button
+                    type='button'
+                    disabled={isPending}
+                    onClick={() =>
+                        startTransition(async () => {
+                            const res = await deliverOrder(order.id);
+
+                            toast({
+                                variant: res.success ? 'default' : 'destructive',
+                                description: res.message,
+                            });
+                        })
+                    }
+                >
+                    {isPending ? 'processing...' : 'Mark As Delivered'}
+                </Button>
+            </>
         );
     };
 

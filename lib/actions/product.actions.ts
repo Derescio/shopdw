@@ -25,6 +25,15 @@ export const getLatestProducts = async () => {
     };
 };
 
+export async function getProductById(productId: string) {
+    const data = await prisma.product.findFirst({
+        where: { id: productId },
+    });
+
+    return prismaToJSObject(data);
+}
+
+
 //Get product by slug
 export const getProductBySlug = async (slug: string) => {
     // const prisma = new PrismaClient();
