@@ -46,35 +46,85 @@ export const getProductBySlug = async (slug: string) => {
 }
 
 // Get all Products
-export const getAllProducts = async ({
-    //disable eslint rules
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// export async function getAllProducts({
+//     query,
+//     limit = PAGE_SIZE,
+//     page,
+//     category,
+// }: {
+//     query: string;
+//     limit?: number;
+//     page: number;
+//     category?: string;
+// }) {
+//     const whereClause: any = {};
+
+//     if (query) {
+//         whereClause.OR = [
+//             { name: { contains: query, mode: 'insensitive' } },
+//             { description: { contains: query, mode: 'insensitive' } },
+//         ];
+//     }
+
+//     if (category) {
+//         whereClause.category = category;
+//     }
+
+//     const data = await prisma.product.findMany({
+//         where: whereClause,
+//         skip: (page - 1) * limit,
+//         take: limit,
+//     });
+
+//     const dataCount = await prisma.product.count({
+//         where: whereClause,
+//     });
+
+//     return {
+//         data,
+//         totalPages: Math.ceil(dataCount / limit),
+//     };
+// }
+
+export async function getAllProducts({
     query,
     limit = PAGE_SIZE,
     page,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    category
+    category,
 }: {
-    query: string,
-    limit?: number,
-    page: number,
-    category?: string
-}) => {
-
-    const offset = (page - 1) * limit;
+    query: string;
+    limit?: number;
+    page: number;
+    category?: string;
+}) {
     const data = await prisma.product.findMany({
-        skip: offset,
+        where: {
+            name: {
+                contains: query, // Filter by query (e.g., product name)
+                mode: 'insensitive', // Optional: Case-insensitive search
+            },
+            category: category ? category : undefined, // Filter by category if provided
+        },
+        skip: (page - 1) * limit,
         take: limit,
-    })
+    });
 
-    const dataCount = await prisma.product.count();
-    //console.log(dataCount)
+    const dataCount = await prisma.product.count({
+        where: {
+            name: {
+                contains: query,
+                mode: 'insensitive',
+            },
+            category: category ? category : undefined,
+        },
+    });
 
     return {
         data,
         totalPages: Math.ceil(dataCount / limit),
-    }
+    };
 }
+
 
 //Create a Product
 export async function createProduct(data: z.infer<typeof insertProductSchema>) {

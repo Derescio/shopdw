@@ -94,7 +94,6 @@ const OrderDetailsTable = ({ order,
             onClick={() =>
                 startTransition(async () => {
                     const res = await updateOrderToPaidByCOD(order.id);
-
                     toast({
                         variant: res.success ? 'default' : 'destructive',
                         description: res.message,
@@ -246,7 +245,10 @@ const OrderDetailsTable = ({ order,
                             {isAdmin && !isPaid && paymentMethod === 'COD' && (
                                 <MarkAsPaidButton />
                             )}
-                            {isAdmin && isPaid && paymentMethod === 'COD' && (
+                            {/* {isAdmin && isPaid && paymentMethod === 'COD' && (
+                                <MarkAsDeliveredButton />
+                            )} */}
+                            {isAdmin && isPaid && (
                                 <MarkAsDeliveredButton />
                             )}
                         </CardContent>

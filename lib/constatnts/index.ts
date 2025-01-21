@@ -38,3 +38,6 @@ export const productDefaultValues = {
     costPrice: '0',
 };
 
+
+//User Roles
+export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES.split(', ') : ['user', 'admin', 'root'];

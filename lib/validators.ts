@@ -145,3 +145,9 @@ export const updateUserSchema = z.object({
     // password: z.string().min(6, 'Password must be at least 6 characters'),
     // confirmPassword: z.string().min(6, 'Confirm password Error'),
 })
+
+//Schema to update users
+export const updateUserProfileSchema = updateUserSchema.extend({
+    id: z.string().min(1, 'Id is required'),
+    role: z.string().min(1, 'Role is required'),
+})
