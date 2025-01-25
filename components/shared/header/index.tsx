@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { APP_NAME } from '@/lib/constatnts';
 import Menu from './menu';
+import CategortDrawer from './category-drawer';
 
 
 
@@ -9,7 +10,8 @@ const Header = () => {
     return <header className='w-full border-b'>
         <div className="wrapper flex-between">
             <div className="flex-start">
-                <Link href='/' className='flex-start'>
+                <CategortDrawer />
+                <Link href='/' className='flex-start ml-4'>
 
                     <Image src='/images/SHOPDDWLogo.png' alt={`${APP_NAME}`} className='rounded-full'
                         width={100} height={100}

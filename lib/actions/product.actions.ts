@@ -158,7 +158,6 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
         }
         revalidatePath('/admin/products');
         return { success: true, message: 'Product updated successfully' };
-
     } catch (error) {
         return { success: false, message: formatError(error) };
     }
@@ -179,9 +178,17 @@ export async function deleteProduct(id: string) {
                 message: 'Product deleted successfully',
             };
         }
-
-
     } catch (error) {
         return { success: false, message: formatError(error) };
     }
 }
+
+//Get All categories
+export async function getAllCategories() {
+    const categories = await prisma.product.groupBy({
+        by: ['category'],
+        _count: true
+    });
+    return categories;
+}
+
