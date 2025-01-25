@@ -19,7 +19,7 @@ const CategortDrawer = async () => {
                 <DrawerHeader>
                     <DrawerTitle>Categories</DrawerTitle>
                     <div className="space-y-1 mt-4">
-                        {categories.map((x, index) => (
+                        {categories.map((x) => (
                             <Button key={x.category} variant='ghost' className='w-full' asChild>
                                 <DrawerClose asChild>
                                     <Link href={`/search?category=${x.category}`}>

@@ -16,7 +16,7 @@ const HomePage = async () => {
   return (
     <>
       <div className="flex  items-center justify-center">
-        {categories.map((x, index) => (
+        {categories.map((x) => (
           <Button key={x.category} variant='ghost' className='max-w-sm' asChild>
             <Link href={`/search?category=${x.category}`}>
               {x.category}
