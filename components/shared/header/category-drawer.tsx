@@ -4,7 +4,7 @@ import { getAllCategories } from "@/lib/actions/product.actions";
 import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 
-const CategortDrawer = async () => {
+const CategoryDrawer = async () => {
     const categories = await getAllCategories();
     //console.log(categories);
     return (<>
@@ -36,4 +36,4 @@ const CategortDrawer = async () => {
     </>);
 }
 
-export default CategortDrawer;
+export default CategoryDrawer;
