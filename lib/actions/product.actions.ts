@@ -91,11 +91,21 @@ export async function getAllProducts({
     limit = PAGE_SIZE,
     page,
     category,
+    //disble eslint for price, rating and sort
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    price,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    rating,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    sort
 }: {
     query: string;
     limit?: number;
     page: number;
     category?: string;
+    price?: string;
+    rating?: string;
+    sort?: string;
 }) {
     const data = await prisma.product.findMany({
         where: {

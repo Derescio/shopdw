@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { APP_NAME } from '@/lib/constatnts';
 import Menu from './menu';
 import CategoryDrawer from './category-drawer';
-
+import Search from "@/components/shared/header/search";
 
 
 const Header = () => {
@@ -21,7 +21,12 @@ const Header = () => {
             </div>
             {/* To Decide Whether to show the cart and user icon in mobile view or Just the APP_NAME */}
             {/* <span className='xs:block  md:hidden font-bold text-2xl ml-3'>{APP_NAME}</span> */}
+
+            <div className="hidden md:block">
+                <Search />
+            </div>
             <Menu />
+
         </div>
     </header>;
 }

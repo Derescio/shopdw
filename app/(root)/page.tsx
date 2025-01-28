@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProductCarousel from "@/components/shared/product/product-carousel";
 
+
 export const metadata = {
   title: "Home",
 };
