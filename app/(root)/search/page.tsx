@@ -1,6 +1,6 @@
 import ProductCard from "@/components/shared/product/product-card";
 import { Button } from "@/components/ui/button";
-import { getAllProducts } from "@/lib/actions/product.actions";
+import { getAllProducts, getAllCategories } from "@/lib/actions/product.actions";
 import Link from "next/link";
 
 const SearchPage = async (props: {
@@ -44,7 +44,7 @@ const SearchPage = async (props: {
         return `/search?${new URLSearchParams(params).toString()}`;
     };
 
-
+    const categories = await getAllCategories();
 
 
     const products = await getAllProducts({ query: q, category, price, rating, sort, page: Number(page) });
@@ -53,8 +53,31 @@ const SearchPage = async (props: {
 
         <div className="grid md:grid-cols-5 md:gap-5">
             <div className="filter-links">
-                {/* FILTERS */}
-
+                {/* Category-Links*/}
+                <div className="text-xl mb-4 mt-3">
+                    Department
+                </div>
+                <div>
+                    <ul className='space-y-1'>
+                        <li>
+                            <Link className={`${('all' === category || '' === category) && 'font-bold'}`}
+                                href={getFilterUrl({ c: 'all' })}
+                            >
+                                Any
+                            </Link>
+                        </li>
+                        {categories.map((x) => (
+                            <li key={x.category}>
+                                <Link
+                                    className={`${x.category === category && 'font-bold'}`}
+                                    href={getFilterUrl({ c: x.category })}
+                                >
+                                    {x.category}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
             <div className="space-y-4 md:col-span-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
