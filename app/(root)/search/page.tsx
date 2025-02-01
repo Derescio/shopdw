@@ -1,5 +1,7 @@
 import ProductCard from "@/components/shared/product/product-card";
+import { Button } from "@/components/ui/button";
 import { getAllProducts } from "@/lib/actions/product.actions";
+import Link from "next/link";
 
 const SearchPage = async (props: {
     searchParams: Promise<{
@@ -18,16 +20,52 @@ const SearchPage = async (props: {
         sort = 'newest',
         page = '1'
     } = await props.searchParams;
-    const products = await getAllProducts({ query: q, category, price, rating, sort, page: Number(page) });
 
+    // Get Filter URL
+    const getFilterUrl = ({
+        c,
+        s,
+        p,
+        r,
+        pg,
+    }: {
+        c?: string;
+        s?: string;
+        p?: string;
+        r?: string;
+        pg?: string;
+    }) => {
+        const params = { q, category, price, rating, sort, page };
+        if (c) params.category = c;
+        if (p) params.price = p;
+        if (r) params.rating = r;
+        if (pg) params.page = pg;
+        if (s) params.sort = s;
+        return `/search?${new URLSearchParams(params).toString()}`;
+    };
+
+
+
+
+    const products = await getAllProducts({ query: q, category, price, rating, sort, page: Number(page) });
+    //console.log('Products', products)
     return (<>
+
         <div className="grid md:grid-cols-5 md:gap-5">
             <div className="filter-links">
                 {/* FILTERS */}
+
             </div>
             <div className="space-y-4 md:col-span-4">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    {products.data.length === 0 && <div className="text-center">No Products Found</div>}
+                    {products.data.length === 0 && (<div className="flex justify-center items-center h-[100%] md:ml-40">
+                        <div className="text-center">
+                            <p>No Products Found</p>
+                            <Button variant="outline" className="mt-4">
+                                <Link href="/">Go Back</Link>
+                            </Button>
+                        </div>
+                    </div>)}
                     {products.data.map((product) => (
                         <ProductCard key={product.id} product={{ ...product, costPrice: product.costPrice.toString() }}>
                             {/* PRODUCT CARD */}

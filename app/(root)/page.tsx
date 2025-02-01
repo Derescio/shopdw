@@ -4,6 +4,7 @@ import { getAllCategories } from "@/lib/actions/product.actions";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ProductCarousel from "@/components/shared/product/product-carousel";
+import ViewAllProductsButton from "@/components/all-products-btn";
 
 
 export const metadata = {
@@ -46,6 +47,7 @@ const HomePage = async () => {
         searchParams={{ q: "" }}
         totalCount={totalCount}
       />
+      <ViewAllProductsButton />
     </>
   );
 };
