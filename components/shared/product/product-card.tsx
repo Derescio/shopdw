@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader } from "../../ui/card";
 import ProductPrice from "./product-price";
 // import ShareButtons from "../sharebuttons/share-buttons";
 import { Product } from "../../../types";
+import Rating from './rating';
 
 const ProductCard = ({ product }: { product: Product }) => {
     return (<Card className="w-full max-w-sm">
@@ -23,6 +24,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                 <p className="text-gray-500">{product.category}</p>
                 {product.stock > 0 ? <ProductPrice value={Number(product.price)} /> : <p className="text-red-500">Out of Stock</p>}
             </div>
+            <Rating value={Number(product.rating)} />
         </CardContent>
         {/* <ShareButtons product={product} /> */}
     </Card>);

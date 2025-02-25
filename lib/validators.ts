@@ -6,6 +6,7 @@ import { PAYMENT_METHODS } from '@/lib/constatnts'
 const currency = z.string().refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
     'Price must be a number and have 2 decimal places')
 
+
 export const insertProductSchema = z.object({
     name: z.string().min(3, 'Name must be at least 3 characters').max(255),
     slug: z.string().min(3, 'Slug must be at least 3 characters').max(255),
@@ -151,3 +152,16 @@ export const updateUserProfileSchema = updateUserSchema.extend({
     id: z.string().min(1, 'Id is required'),
     role: z.string().min(1, 'Role is required'),
 })
+
+// Review Schema
+export const insertReviewSchema = z.object({
+    title: z.string().min(3, 'Title must be at least 3 characters'),
+    description: z.string().min(3, 'Description must be at least 3 characters'),
+    productId: z.string().min(1, 'Product is required'),
+    userId: z.string().min(1, 'User is required'),
+    rating: z.coerce
+        .number()
+        .int()
+        .min(1, 'Rating must be at least 1')
+        .max(5, 'Rating must be at most 5'),
+});

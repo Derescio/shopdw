@@ -8,6 +8,9 @@ import ProductImages from "@/components/shared/product/product-images";
 import AddToCart from "@/components/shared/cart/add-to-cart";
 import { Metadata } from "next";
 // import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
+import ReviewList from "./review-list";
+import { auth } from "@/auth";
+
 
 
 
@@ -17,22 +20,22 @@ export const metadata: Metadata = {
     description: 'Products Page',
 };
 
-const ProductPage = async (
-    props: {
-        params: Promise<{ slug: string }>;
-    }
-) => {
+const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
+
     const params = await props.params;
 
-    const {
-        slug
-    } = params;
+    const { slug } = params;
+    //console.log(slug)
 
     const product = await getProductBySlug(slug);
     if (!product) {
         notFound();
     }
     const cart = await getMyCart();
+    const session = await auth();
+    const userId = session?.user?.id;
+
+
     return (<>
 
         <section>
@@ -50,7 +53,9 @@ const ProductPage = async (
 
                         </p>
                         <h1 className="h3-bold">{product.name}</h1>
-                        <p>{product.rating} out of {product.numReviews} Reviews</p>
+                        <p>
+                            {product.rating} of {product.numReviews} reviews
+                        </p>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <ProductPrice
                                 value={Number(product.price)}
@@ -124,6 +129,11 @@ const ProductPage = async (
                 </div>
             </div>
 
+        </section>
+
+        <section>
+            <h2 className="h2-bold mt-6">Customer Reviews</h2>
+            <ReviewList userId={userId || ""} productId={product.id} productSlug={product.slug} />
         </section>
     </>);;
 }

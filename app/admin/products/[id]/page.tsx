@@ -8,14 +8,11 @@ export const metadata: Metadata = {
     title: 'Update product',
 };
 
-const UpdateProductPage = async (props: {
-    params: Promise<{
-        id: string;
-    }>;
-}) => {
-    const { id } = await props.params;
+const UpdateProductPage = async (props: { params: Promise<{ id: string; }> }) => {
 
+    const { id } = await props.params;
     const product = await getProductById(id);
+
     if (!product) return notFound();
 
     return (
