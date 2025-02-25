@@ -10,7 +10,6 @@ import { Metadata } from "next";
 // import ShareButtons from "@/components/shared/sharebuttons/share-buttons";
 import ReviewList from "./review-list";
 import { auth } from "@/auth";
-import { StarIcon } from "lucide-react";
 import Rating from "@/components/shared/product/rating";
 
 

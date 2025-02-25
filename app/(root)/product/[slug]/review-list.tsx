@@ -6,7 +6,7 @@ import ReviewForm from './review-form';
 import { getReviews } from '@/lib/actions/review.actions';
 import Rating from '@/components/shared/product/rating';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarCheck, CalendarRange, CalendarSearch, Car, User } from "lucide-react";
+import { CalendarCheck, User } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 
 
