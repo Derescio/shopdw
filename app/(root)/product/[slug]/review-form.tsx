@@ -28,7 +28,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
-import { createUpdateReview } from '@/lib/actions/review.actions';
+import { createUpdateReview, getReviewByProductId } from '@/lib/actions/review.actions';
 import { insertReviewSchema } from '@/lib/validators';
 import { z } from 'zod';
 import { StarIcon } from 'lucide-react';
@@ -44,7 +44,7 @@ const ReviewForm = ({
 }: {
     userId: string;
     productId: string;
-    onReviewSubmitted?: () => void;
+    onReviewSubmitted: () => void;
 }) => {
 
     const [open, setOpen] = useState(false);
@@ -56,12 +56,19 @@ const ReviewForm = ({
         defaultValues: reviewFormDefaultValues,
     });
 
-    const handleOpenForm = () => {
+    const handleOpenForm = async () => {
         form.setValue('productId', productId);
         form.setValue('userId', userId);
+        const review = await getReviewByProductId({ productId });
+        if (review) {
+            form.setValue('rating', review.rating);
+            form.setValue('title', review.title);
+            form.setValue('description', review.description);
+        }
         setOpen(true);
 
     }
+    console.log(form)
 
     const onSubmit: SubmitHandler<CustomerReview> = async (values) => {
         const res = await createUpdateReview({ ...values, productId });
@@ -74,7 +81,7 @@ const ReviewForm = ({
 
         setOpen(false);
 
-        onReviewSubmitted?.();
+        onReviewSubmitted();
 
         toast({
             description: res.message,

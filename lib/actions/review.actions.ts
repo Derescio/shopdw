@@ -103,7 +103,7 @@ export async function createUpdateReview(data: z.infer<typeof insertReviewSchema
 }
 
 
-
+//Get Reviews
 export async function getReviews({ productId }: { productId: string }) {
     const data = await prisma.review.findMany({
         where: {
@@ -124,11 +124,8 @@ export async function getReviews({ productId }: { productId: string }) {
     return { data };
 }
 
-export const getReviewByProductId = async ({
-    productId,
-}: {
-    productId: string;
-}) => {
+//Get Review By Product Id
+export const getReviewByProductId = async ({ productId, }: { productId: string }) => {
     const session = await auth();
     if (!session) throw new Error('User is not authenticated');
 

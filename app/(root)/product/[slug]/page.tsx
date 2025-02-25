@@ -11,6 +11,7 @@ import { Metadata } from "next";
 import ReviewList from "./review-list";
 import { auth } from "@/auth";
 import { StarIcon } from "lucide-react";
+import Rating from "@/components/shared/product/rating";
 
 
 
@@ -54,9 +55,10 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
 
                         </p>
                         <h1 className="h3-bold">{product.name}</h1>
-                        <p className="flex items-center gap-2 text-xl">
-                            {product.rating} <StarIcon className="w-6 h-6 bg-yellow-100" /> out of {product.numReviews} reviews
-                        </p>
+                        <div className="flex items-center gap-2 text-xl">
+                            <Rating value={Number(product.rating)} />
+                            - {product.numReviews} Reviews
+                        </div>
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                             <ProductPrice
                                 value={Number(product.price)}
