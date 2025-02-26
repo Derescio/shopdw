@@ -131,7 +131,6 @@ export async function getOrderById(orderId: string) {
 }
 
 //Create New Papal Payment/Order
-
 export async function createPayPalOrder(orderId: string) {
     try {
         // Get order from database
