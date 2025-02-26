@@ -30,15 +30,18 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
+import StripePayment from './stripe-payment';
 
 
 const OrderDetailsTable = ({ order,
     paypalClientId,
-    isAdmin
+    isAdmin,
+    stripeClientSecret,
 }: {
     order: Order;
     paypalClientId: string;
     isAdmin: boolean;
+    stripeClientSecret: string | null;
 }) => {
     const {
         shippingAddress,
@@ -55,7 +58,7 @@ const OrderDetailsTable = ({ order,
     } = order;
 
     const { toast } = useToast();
-
+    //console.log(stripeClientSecret)
 
     function PrintLoadingState() {
         const [{ isPending, isRejected }] = usePayPalScriptReducer();
@@ -241,6 +244,15 @@ const OrderDetailsTable = ({ order,
                                     </div>
                                 )
                             }
+
+                            {/* Stripe Payment */}
+                            {
+                                !isPaid && paymentMethod === 'Credit Card' && stripeClientSecret && (
+                                    <StripePayment clientSecret={stripeClientSecret} orderId={order.id} priceInCents={Number(order.totalPrice) * 100} />
+                                )
+                            }
+
+
                             {/* Cash On Delivery */}
                             {isAdmin && !isPaid && paymentMethod === 'COD' && (
                                 <MarkAsPaidButton />
