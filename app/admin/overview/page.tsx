@@ -24,7 +24,9 @@ const AdminOverviewPage = async () => {
     }
     const summary = await getOrderSummary();
     //console.log(summary)
-
+    console.log('Total Revenue:', summary.totalRevenue);  // $3,354.32
+    console.log('Total Profit:', summary.totalProfit);    // $1,009.85
+    console.log('Valid Sales:', summary.orderCount);     // 16
 
 
     return (<>
@@ -41,7 +43,7 @@ const AdminOverviewPage = async () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {formatCurrency((summary?.totalSales?._sum?.totalPrice ?? 0).toString())}
+                            {formatCurrency(summary.totalRevenue.toString())}
                         </div>
                     </CardContent>
                 </Card>
@@ -52,7 +54,7 @@ const AdminOverviewPage = async () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {formatCurrency((summary?.result?.profit ?? 0).toString())}
+                            {formatCurrency(summary.totalProfit.toString())}
                         </div>
                     </CardContent>
                 </Card>
