@@ -1,6 +1,6 @@
 'use server';
 
-import { CartItem } from '@/types';
+import { CartItem } from '@/types/index';
 import { cookies } from 'next/headers';
 import { roundNumber } from '../utils';
 import { formatError, prismaToJSObject } from '../utils';

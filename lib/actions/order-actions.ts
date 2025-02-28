@@ -7,7 +7,7 @@ import { getMyCart } from './cart.actions';
 import { getUserById } from './user.actions';
 import { insertOrderSchema } from '../validators';
 import { prisma } from '@/app/db/prisma';
-import { CartItem, PaymentResult } from '@/types';
+import { CartItem, PaymentResult } from '@/types/index';
 import { revalidatePath } from 'next/cache';
 import { paypal } from '../paypal';
 import { PAGE_SIZE } from '../constatnts';
@@ -328,33 +328,26 @@ export async function deliverOrder(orderId: string): Promise<{ success: boolean,
 
 
 //Fetch Orders
-export async function getOrder({ limit = PAGE_SIZE, page }: { limit?: number, page: number }): Promise<{ data: any, totalPages: number }> {
+export async function getOrder({ limit = PAGE_SIZE,
+    page,
+}: {
+    limit?: number;
+    page: number;
+}) {
     const session = await auth();
-    if (!session) {
-        throw new Error('You must be logged in to view your orders');
-    }
-
+    if (!session) throw new Error('User is not authorized');
 
     const data = await prisma.order.findMany({
-        where: {
-            userId: session?.user?.id,
-        },
-        orderBy: {
-            createdAt: 'desc'
-        },
+        where: { userId: session?.user?.id },
+        orderBy: { createdAt: 'desc' },
         take: limit,
         skip: (page - 1) * limit,
-        // include: {
-        //     orderitems: true,
-        //     user: { select: { name: true, email: true } },
-        // },
     });
 
     const dataCount = await prisma.order.count({
-        where: {
-            userId: session?.user?.id,
-        },
+        where: { userId: session?.user?.id },
     });
+
     return {
         data,
         totalPages: Math.ceil(dataCount / limit),
@@ -366,10 +359,10 @@ export async function getOrder({ limit = PAGE_SIZE, page }: { limit?: number, pa
 
 
 
-type SalesDataType = {
-    month: string;
-    totalSales: number;
-}[]
+// type SalesDataType = {
+//     month: string;
+//     totalSales: number;
+// }[]
 
 /**
  * Retrieves a summary of order-related data including counts, sales, and profits.
@@ -618,16 +611,28 @@ export async function getOrderSummary(): Promise<{
 export async function getAllOrders({
     limit = PAGE_SIZE,
     page,
-    query
+    query,
 }: {
     limit?: number;
     page: number;
-    query?: string;
-}): Promise<{ data: any, totalPages: number }> {
-    const queryFilter: Prisma.OrderWhereInput = query && query !== 'all' ? { user: { name: { contains: query, mode: 'insensitive' } as Prisma.StringFilter } } : {}
+    query: string;
+}) {
+    const queryFilter: Prisma.OrderWhereInput =
+        query && query !== 'all'
+            ? {
+                user: {
+                    name: {
+                        contains: query,
+                        mode: 'insensitive',
+                    } as Prisma.StringFilter,
+                },
+            }
+            : {};
 
     const data = await prisma.order.findMany({
-        where: { ...queryFilter },
+        where: {
+            ...queryFilter,
+        },
         orderBy: { createdAt: 'desc' },
         take: limit,
         skip: (page - 1) * limit,
@@ -641,7 +646,6 @@ export async function getAllOrders({
         totalPages: Math.ceil(dataCount / limit),
     };
 }
-
 
 export async function deleteOrder(id: string): Promise<{ success: boolean, message: string }> {
     try {

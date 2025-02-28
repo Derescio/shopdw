@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useTransition } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { ToastAction } from '@/components/ui/toast';
-import { Cart, CartItem } from '@/types';
+import { Cart, CartItem } from '@/types/index';
 import { Plus, Minus, Loader } from 'lucide-react';
 import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
 

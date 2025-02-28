@@ -1,5 +1,5 @@
 'use client';
-import { Review } from "@/types";
+import { Review } from "@/types/index";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ReviewForm from './review-form';

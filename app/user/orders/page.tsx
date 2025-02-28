@@ -13,6 +13,15 @@ export const metadata: Metadata = {
 }
 
 
+// type Order = {
+//     id: string;
+//     createdAt: Date;
+//     totalPrice: number;
+//     isPaid: boolean;
+//     isDelivered: boolean;
+// };
+
+
 const OrdersPage = async (props: {
     searchParams: Promise<{ page: string }>
 }) => {

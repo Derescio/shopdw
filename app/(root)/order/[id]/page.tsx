@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import NotFound from "@/app/not-found";
 import { getOrderById } from "@/lib/actions/order-actions";
 import OrderDetailsTable from './order-details-table';
-import { ShippingAddress } from "@/types";
+import { ShippingAddress } from "@/types/index";
 import { auth } from "@/auth";
 import Stripe from 'stripe';
 

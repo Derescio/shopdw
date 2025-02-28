@@ -1,6 +1,6 @@
 'use client'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { Product } from "@/types";
+import { Product } from "@/types/index";
 import Autoplay from 'embla-carousel-autoplay'
 import Link from "next/link";
 import Image from "next/image";

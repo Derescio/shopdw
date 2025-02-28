@@ -6,7 +6,7 @@ import PlaceOrderForm from "./place-order-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getUserById } from "@/lib/actions/user.actions";
-import { ShippingAddress } from "@/types";
+import { ShippingAddress } from "@/types/index";
 import { formatCurrency } from '@/lib/utils';
 import CheckOutSteps from "@/components/shared/checkout-steps";
 import { Button } from '@/components/ui/button';

@@ -2,7 +2,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import ProductCard from "./product-card";
-import { Product } from "@/types";
+import { Product } from "@/types/index";
 import { LATEST_PRODUCTS_LIMIT } from "@/lib/constatnts";
 
 interface ProductListProps {

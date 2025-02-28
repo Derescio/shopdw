@@ -25,7 +25,7 @@ import {
     updateOrderToPaidByCOD
 } from '@/lib/actions/order-actions';
 import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
-import { Order } from '@/types';
+import { Order } from '@/types/index';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTransition } from 'react';

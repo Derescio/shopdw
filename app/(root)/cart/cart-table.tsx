@@ -1,6 +1,6 @@
 'use client';
 
-import { Cart } from "@/types";
+import { Cart } from "@/types/index";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { useTransition } from "react";

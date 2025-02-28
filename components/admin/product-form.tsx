@@ -4,7 +4,7 @@ import { ControllerRenderProps, SubmitHandler, useForm } from "react-hook-form";
 import { insertProductSchema, updateProductSchema } from "@/lib/validators";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@/types";
+import { Product } from "@/types/index";
 import { useToast } from "@/hooks/use-toast";
 import { productDefaultValues } from "@/lib/constatnts";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";

@@ -7,7 +7,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { prisma } from '@/app/db/prisma';
 import { formatError } from '../utils';
 import { hashSync } from 'bcrypt-ts-edge';
-import { ShippingAddress } from '@/types';
+import { ShippingAddress } from '@/types/index';
 import { paymentMethodSchema } from '../validators';
 import { updateUserProfileSchema } from '../validators';
 
