@@ -3,8 +3,9 @@ import { formatNumber } from './utils';
 import { PAYMENT_METHODS } from '@/lib/constatnts'
 
 //Schema for inserting products
-const currency = z.string().refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
-    'Price must be a number and have 2 decimal places')
+//const currency = z.string().refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
+// 'Price must be a number and have 2 decimal places')
+const currency = z.coerce.number().min(0, 'Price must be a positive number').multipleOf(0.01);
 
 
 export const insertProductSchema = z.object({
@@ -69,10 +70,7 @@ export const cartItemSchema = z.object({
     slug: z.string().min(1, 'Slug is required'),
     qty: z.number().int().nonnegative('Quantity must be a positive number'),
     image: z.string().min(1, 'Image is required'),
-    price: z
-        .number()
-        .refine((value) => /^\d+(\.\d{2})?$/.test(formatNumber(Number(value))),
-            'Price must be a number and have 2 decimal places')
+    price: currency,
 
 });
 
@@ -127,8 +125,9 @@ export const insertOrderItemSchema = z.object({
     slug: z.string(),
     image: z.string(),
     name: z.string(),
-    price: currency,
+    unitPrice: currency,
     qty: z.number(),
+    totalPrice: currency,
 });
 
 //Schema for payment result

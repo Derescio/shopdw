@@ -23,7 +23,7 @@ const handleError = (error: unknown) => {
 const fetchOrderById = async (orderId: string) => {
     const order = await prisma.order.findFirst({
         where: { id: orderId },
-        include: { orderitems: true, user: { select: { name: true, email: true } } },
+        include: { orderItems: true, user: { select: { name: true, email: true } } },
     });
     if (!order) throw new Error('Order not found');
     return order;
@@ -102,9 +102,14 @@ export const createOrder = async (): Promise<{ success: boolean, message: string
             for (const item of cart.items as CartItem[]) {
                 await tx.orderItem.create({
                     data: {
-                        ...item,
-                        price: item.price,
                         orderId: insertedOrder.id,
+                        productId: item.productId, // ✅ Add product ID
+                        qty: item.qty, // ✅ Add quantity
+                        unitPrice: item.price, // ✅ Add unit price
+                        totalPrice: item.price * item.qty, // ✅ Calculate total price
+                        name: item.name, // ✅ Add product name
+                        slug: item.slug, // ✅ Add slug
+                        image: item.image, // ✅ Add image
                     },
                 });
             }
@@ -149,7 +154,7 @@ export async function getOrderById(orderId: string) {
             id: orderId,
         },
         include: {
-            orderitems: true,
+            orderItems: true,
             user: { select: { name: true, email: true } },
         },
     });
@@ -258,7 +263,7 @@ export async function updateOrderToPaid({
     // Transaction to update the order and update the product quantities
     await prisma.$transaction(async (tx) => {
         // Update all item quantities in the database
-        for (const item of order.orderitems) {
+        for (const item of order.orderItems) {
             await tx.product.update({
                 where: { id: item.productId },
                 data: { stock: { increment: -item.qty } },
@@ -282,7 +287,7 @@ export async function updateOrderToPaid({
             id: orderId,
         },
         include: {
-            orderitems: true,
+            orderItems: true,
             user: { select: { name: true, email: true } },
         },
     });

@@ -14,9 +14,10 @@ import { Prisma } from '@prisma/client';
 export const getLatestProducts = async () => {
     const totalCount = await prisma.product.count(); // Total number of products
     const products = await prisma.product.findMany({
-
+        where: { isDiscontinued: false },
         orderBy: {
             createdAt: "desc",
+
         },
     });
 
