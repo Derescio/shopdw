@@ -18,10 +18,7 @@ import { Card, CardContent } from "../ui/card";
 import Image from "next/image";
 import { Checkbox } from "../ui/checkbox";
 
-
 const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', product?: Product, productId?: string }) => {
-
-
     const router = useRouter();
     const { toast } = useToast();
 
@@ -69,8 +66,7 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
     const isFeatured = form.watch('isFeatured');
     const banner = form.watch('banner');
 
-
-    return (<>
+    return (
         <Form {...form}>
             <form className='space-y-8' method='post' onSubmit={form.handleSubmit(onSubmit)}>
                 <div className='flex flex-col gap-5 md:flex-row'>
@@ -170,7 +166,6 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             </FormItem>
                         )}
                     />
-
                 </div>
                 <div className='flex flex-col gap-5 md:flex-row'>
                     {/* Price */}
@@ -188,7 +183,7 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             <FormItem className='w-full'>
                                 <FormLabel>Price</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='Enter product price' {...field} />
+                                    <Input type='number' placeholder='Enter product price' {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -217,7 +212,7 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                     />
                 </div>
                 <div className='flex flex-col gap-5 md:flex-row'>
-                    {/* Price */}
+                    {/* SKU */}
                     <FormField
                         control={form.control}
                         name='sku'
@@ -232,13 +227,13 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             <FormItem className='w-full'>
                                 <FormLabel>SKU</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='Enter product Sku' {...field} />
+                                    <Input placeholder='Enter product SKU' {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
-                    {/* Stock */}
+                    {/* Cost Price */}
                     <FormField
                         control={form.control}
                         name='costPrice'
@@ -253,7 +248,7 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             <FormItem className='w-full'>
                                 <FormLabel>Cost Price</FormLabel>
                                 <FormControl>
-                                    <Input type='number' placeholder='Enter product stock' {...field} />
+                                    <Input type='number' placeholder='Enter product cost price' {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -347,33 +342,33 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             )}
                         </CardContent>
                     </Card>
-
-
                 </div>
-                <div> <FormField
-                    control={form.control}
-                    name='description'
-                    render={({
-                        field,
-                    }: {
-                        field: ControllerRenderProps<
-                            z.infer<typeof insertProductSchema>,
-                            'description'
-                        >;
-                    }) => (
-                        <FormItem className='w-full'>
-                            <FormLabel>Description</FormLabel>
-                            <FormControl>
-                                <Textarea
-                                    placeholder='Enter product description'
-                                    className='resize-none'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /></div>
+                <div>
+                    <FormField
+                        control={form.control}
+                        name='description'
+                        render={({
+                            field,
+                        }: {
+                            field: ControllerRenderProps<
+                                z.infer<typeof insertProductSchema>,
+                                'description'
+                            >;
+                        }) => (
+                            <FormItem className='w-full'>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder='Enter product description'
+                                        className='resize-none'
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
                 <div>
                     {/* Submit */}
                     <div className='flex justify-end'>
@@ -385,12 +380,10 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                             {type === 'create' ? 'Create' : 'Update'}
                         </Button>
                     </div>
-
-
                 </div>
             </form>
         </Form>
-    </>);
+    );
 }
 
 export default ProductForm;

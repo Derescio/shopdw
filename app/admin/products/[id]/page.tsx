@@ -9,7 +9,6 @@ export const metadata: Metadata = {
 };
 
 const UpdateProductPage = async (props: { params: Promise<{ id: string; }> }) => {
-
     const { id } = await props.params;
     const product = await getProductById(id);
 
@@ -18,7 +17,16 @@ const UpdateProductPage = async (props: { params: Promise<{ id: string; }> }) =>
     return (
         <div className='space-y-8 max-w-5xl mx-auto'>
             <h1 className='h2-bold'>Update Product</h1>
-            <ProductForm type='update' product={{ ...product, costPrice: product.costPrice.toString() }} productId={product.id} />
+            <ProductForm
+                type='update'
+                product={{
+                    ...product,
+                    price: Number(product.price),
+                    costPrice: Number(product.costPrice),
+                    rating: Number(product.rating)
+                }}
+                productId={product.id}
+            />
         </div>
     );
 };

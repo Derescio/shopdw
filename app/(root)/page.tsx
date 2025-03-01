@@ -32,16 +32,18 @@ const HomePage = async () => {
         <ProductCarousel
           data={featuredProducts.map((product) => ({
             ...product,
-            costPrice: product.costPrice.toString(),
+            costPrice: Number(product.costPrice),  // Ensure number type
+            rating: Number(product.rating),  // Ensure number type
+            price: Number(product.price),  // If price is also stored as a string
           }))}
         />
       )}
       <ProductList
         data={products.map((product) => ({
           ...product,
-          price: product.price.toString(),
-          costPrice: product.price.toString(),
-          rating: product.rating.toString(),
+          price: Number(product.price),
+          costPrice: Number(product.costPrice),
+          rating: Number(product.rating),
         }))}
         title="Newest Arrivals"
         searchParams={{ q: "" }}

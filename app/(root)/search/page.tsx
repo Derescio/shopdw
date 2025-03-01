@@ -229,7 +229,6 @@ const SearchPage = async (props: {
                     </div>
                 </div>
 
-
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {products.data.length === 0 && (<div className="flex justify-center items-center h-[100%] md:ml-40">
                         <div className="text-center">
@@ -240,7 +239,7 @@ const SearchPage = async (props: {
                         </div>
                     </div>)}
                     {products.data.map((product) => (
-                        <ProductCard key={product.id} product={{ ...product, costPrice: product.costPrice.toString() }}>
+                        <ProductCard key={product.id} product={{ ...product, costPrice: Number(product.costPrice), rating: Number(product.rating), price: Number(product.price) }}>
                             {/* PRODUCT CARD */}
                         </ProductCard>
                     ))}

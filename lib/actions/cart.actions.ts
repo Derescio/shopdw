@@ -137,10 +137,10 @@ export async function getMyCart() {
     return prismaToJSObject({
         ...cart,
         items: cart.items as CartItem[],
-        itemsPrice: cart.itemsPrice.toString(),
-        totalPrice: cart.totalPrice.toString(),
-        shippingPrice: cart.shippingPrice.toString(),
-        taxPrice: cart.taxPrice.toString(),
+        itemsPrice: Number(cart.itemsPrice),  // Convert to number
+        totalPrice: Number(cart.totalPrice),  // Convert to number
+        shippingPrice: Number(cart.shippingPrice),  // Convert to number
+        taxPrice: Number(cart.taxPrice),  // Convert to number
     })
 
 }

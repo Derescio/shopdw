@@ -39,6 +39,15 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
             <OrderDetailsTable
                 order={{
                     ...order,
+                    itemsPrice: Number(order.itemsPrice),  // Convert to number
+                    totalPrice: Number(order.totalPrice),  // Convert to number
+                    shippingPrice: Number(order.shippingPrice),  // Convert to number
+                    taxPrice: Number(order.taxPrice),  // Convert to number
+                    orderItems: order.orderItems.map(item => ({
+                        ...item,
+                        totalPrice: Number(item.totalPrice),  // Convert Decimal to number
+                        unitPrice: Number(item.unitPrice),  // Convert Decimal to number
+                    })),
                     shippingAddress: order.shippingAddress as ShippingAddress,
                 }}
                 stripeClientSecret={client_secret}

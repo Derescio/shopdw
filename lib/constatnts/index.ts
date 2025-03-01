@@ -28,16 +28,15 @@ export const productDefaultValues = {
     brand: '',
     description: '',
     stock: 0,
-    rating: '0',
-    price: '0',
+    rating: 0, // Changed to number
+    price: 0, // Changed to number
     images: [],
-    numReviews: '0',
+    numReviews: 0, // Changed to number
     isFeatured: false,
     banner: null,
     sku: '',
-    costPrice: '0',
+    costPrice: 0, // Changed to number
 };
-
 
 //User Roles
 export const USER_ROLES = process.env.USER_ROLES ? process.env.USER_ROLES.split(', ') : ['user', 'admin', 'root'];

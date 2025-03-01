@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { formatNumber } from './utils';
+
 import { PAYMENT_METHODS } from '@/lib/constatnts'
 
 //Schema for inserting products
@@ -18,9 +18,9 @@ export const insertProductSchema = z.object({
     images: z.array(z.string()).min(1, 'At least one image is required'),
     isFeatured: z.boolean(),
     banner: z.string().nullable(),
-    price: currency,
+    price: z.coerce.number().min(0),
     sku: z.string().min(3, 'SKU must be at least 3 characters').max(255),
-    costPrice: currency,
+    costPrice: z.coerce.number().min(0),
 });
 
 

@@ -30,7 +30,7 @@ const sampleData = {
       numReviews: 10,
       stock: 5,
       isFeatured: true,
-      banner: 'banner-1.jpg',
+      banner: '/images/banner-1.jpg',
       costPrice: 20.00,
       sku: "PO-STRETCH-SHIRT-123"
     },
