@@ -35,6 +35,8 @@ const HomePage = async () => {
             costPrice: Number(product.costPrice),  // Ensure number type
             rating: Number(product.rating),  // Ensure number type
             price: Number(product.price),  // If price is also stored as a string
+            discountRate: Number(product.discountRate),
+            isDiscounted: Boolean(product.isDiscounted),
           }))}
         />
       )}
@@ -44,6 +46,8 @@ const HomePage = async () => {
           price: Number(product.price),
           costPrice: Number(product.costPrice),
           rating: Number(product.rating),
+          discountRate: Number(product.discountRate),
+          isDiscounted: Boolean(product.isDiscounted),
         }))}
         title="Newest Arrivals"
         searchParams={{ q: "" }}

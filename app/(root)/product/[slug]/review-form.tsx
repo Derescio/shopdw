@@ -68,7 +68,7 @@ const ReviewForm = ({
         setOpen(true);
 
     }
-    console.log(form)
+    // console.log(form)
 
     const onSubmit: SubmitHandler<CustomerReview> = async (values) => {
         const res = await createUpdateReview({ ...values, productId });

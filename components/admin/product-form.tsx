@@ -343,6 +343,60 @@ const ProductForm = ({ type, product, productId }: { type: 'create' | 'update', 
                         </CardContent>
                     </Card>
                 </div>
+
+                <div className="flex flex-col gap-5 md:flex-row">
+                    {/* Is Discounted */}
+                    <FormField
+                        control={form.control}
+                        name="isDiscounted"
+                        render={({
+                            field,
+                        }: {
+                            field: ControllerRenderProps<
+                                z.infer<typeof insertProductSchema>,
+                                'isDiscounted'
+                            >;
+                        }) => (
+                            <FormItem className="w-full flex flex-row items-center space-x-2">
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <FormLabel>Is Discounted?</FormLabel>
+                            </FormItem>
+                        )}
+                    />
+
+                    {/* Discount Rate */}
+                    <FormField
+                        control={form.control}
+                        name="discountRate"
+                        render={({
+                            field,
+                        }: {
+                            field: ControllerRenderProps<
+                                z.infer<typeof insertProductSchema>,
+                                'discountRate'
+                            >;
+                        }) => (
+                            <FormItem className="w-full">
+                                <FormLabel>Discount Rate (%)</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="number"
+                                        placeholder="Enter discount rate"
+
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                </div>
+
                 <div>
                     <FormField
                         control={form.control}

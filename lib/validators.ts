@@ -17,6 +17,8 @@ export const insertProductSchema = z.object({
     stock: z.coerce.number().min(0),
     images: z.array(z.string()).min(1, 'At least one image is required'),
     isFeatured: z.boolean(),
+    isDiscounted: z.boolean(),
+    discountRate: z.coerce.number().min(0).max(100),
     banner: z.string().nullable(),
     price: z.coerce.number().min(0),
     sku: z.string().min(3, 'SKU must be at least 3 characters').max(255),
@@ -71,6 +73,8 @@ export const cartItemSchema = z.object({
     qty: z.number().int().nonnegative('Quantity must be a positive number'),
     image: z.string().min(1, 'Image is required'),
     price: currency,
+    isDiscounted: z.boolean(),
+    discountRate: z.coerce.number().min(0).max(100),
 
 });
 

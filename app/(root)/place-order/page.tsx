@@ -1,6 +1,4 @@
 import { Metadata } from "next";
-import Image from 'next/image';
-import Link from 'next/link';
 import { getMyCart } from "@/lib/actions/cart.actions";
 import PlaceOrderForm from "./place-order-form";
 import { auth } from "@/auth";
@@ -9,16 +7,17 @@ import { getUserById } from "@/lib/actions/user.actions";
 import { ShippingAddress } from "@/types/index";
 import { formatCurrency } from '@/lib/utils';
 import CheckOutSteps from "@/components/shared/checkout-steps";
-import { Button } from '@/components/ui/button';
+
 import { Card, CardContent } from '@/components/ui/card';
 import {
     Table,
-    TableBody,
-    TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import ShippingMethodEdit from "../shipping/shippingmethodedit";
+import PaymentMethodEdit from "../payment-method/payment-method-edit";
+import CartEdit from "../cart/cart-edit";
 
 export const metadata: Metadata = {
     title: 'Place Order',
@@ -56,9 +55,7 @@ const PlaceOrderPage = async () => {
                             {userAddress.country}{' '}
                         </p>
                         <div className='mt-3'>
-                            <Link href='/shipping'>
-                                <Button variant='outline'>Edit</Button>
-                            </Link>
+                            <ShippingMethodEdit address={userAddress} />
                         </div>
                     </CardContent>
                 </Card>
@@ -69,9 +66,7 @@ const PlaceOrderPage = async () => {
                         <h2 className='text-xl pb-4'>Payment Method</h2>
                         <p>{user.paymentMethod}</p>
                         <div className='mt-3'>
-                            <Link href='/payment-method'>
-                                <Button variant='outline'>Edit</Button>
-                            </Link>
+                            <PaymentMethodEdit paymentmethod={{ type: user.paymentMethod }} />
                         </div>
                     </CardContent>
                 </Card>
@@ -88,7 +83,7 @@ const PlaceOrderPage = async () => {
                                     <TableHead>Price</TableHead>
                                 </TableRow>
                             </TableHeader>
-                            <TableBody>
+                            {/* <TableBody>
                                 {cart.items.map((item) => (
                                     <TableRow key={item.slug}>
                                         <TableCell>
@@ -111,11 +106,9 @@ const PlaceOrderPage = async () => {
                                         <TableCell className='text-right'>${item.price}</TableCell>
                                     </TableRow>
                                 ))}
-                            </TableBody>
+                            </TableBody> */}
                         </Table>
-                        <Link href='/cart'>
-                            <Button variant='outline'>Edit</Button>
-                        </Link>
+                        <CartEdit cart={cart} />
                     </CardContent>
                 </Card>
             </div>
@@ -123,7 +116,7 @@ const PlaceOrderPage = async () => {
                 <Card className="mt-4 md:mt-0">
                     <CardContent className='p-4 gap-4 space-y-4'>
                         <div className='flex justify-between'>
-                            <div>Items</div>
+                            <div>Subtotal</div>
                             <div>{formatCurrency(cart.itemsPrice)}</div>
                         </div>
                         <div className='flex justify-between'>

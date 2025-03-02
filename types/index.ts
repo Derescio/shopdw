@@ -18,6 +18,7 @@ export type Product = z.infer<typeof insertProductSchema> & {
     rating: number;
     numReviews: number;
     createdAt: Date;
+
 }
 
 

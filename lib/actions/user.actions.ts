@@ -249,3 +249,10 @@ export async function updateUser(user: z.infer<typeof updateUserProfileSchema>) 
         return { success: false, message: formatError(error) };
     }
 }
+
+
+
+
+export async function revalidatePlaceOrder() {
+    revalidatePath("/place-order");
+}

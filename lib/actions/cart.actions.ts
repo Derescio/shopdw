@@ -13,10 +13,12 @@ import { Prisma } from '@prisma/client';
 
 // Calculate cart prices
 const calcPrice = (items: CartItem[]) => {
+
     const itemsPrice = roundNumber(items.reduce((acc, item) => acc + Number(item.price) * item.qty, 0));
     const shippingPrice = roundNumber(itemsPrice > 100 ? 0 : 10);
     const taxPrice = roundNumber(itemsPrice * 0.15);
     const totalPrice = roundNumber(itemsPrice + shippingPrice + taxPrice);
+
     return {
         itemsPrice: itemsPrice.toFixed(2),
         shippingPrice: shippingPrice.toFixed(2),
@@ -110,8 +112,6 @@ export async function addItemToCart(data: CartItem) {
             message: formatError(error),
         };
     }
-
-
 };
 
 //Add Items to the Cart
@@ -222,3 +222,21 @@ export async function deleteCart() {
     }
 }
 
+export async function applyDiscount(items: CartItem[], discountRate: number, minAmount: number) {
+    if (discountRate < 0 || discountRate > 100) {
+        throw new Error("Discount rate must be between 0 and 100");
+    }
+
+    const totalPrice = items.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+    // Apply discount only if total price exceeds minAmount
+    if (totalPrice >= minAmount) {
+        const discountFactor = 1 - discountRate / 100;
+        return items.map(item => ({
+            ...item,
+            price: parseFloat((item.price * discountFactor).toFixed(2)),
+        }));
+    }
+
+    return items; // Return original prices if criteria not met
+}

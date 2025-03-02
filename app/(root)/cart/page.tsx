@@ -10,8 +10,6 @@ export const metadata = {
 const CartPage = async () => {
     const cart = await getMyCart();
 
-
-
     return (<>
         <CartTable cart={cart} />
         {/* Disable DeleteCart is cart variable is undefined or null */}

@@ -12,15 +12,34 @@ import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from '@
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from '@/lib/utils';
 import { Card, CardContent } from "@/components/ui/card";
+import { useSession } from "next-auth/react";
 
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
-
+    const { data: session } = useSession();
     const router = useRouter();
     const { toast } = useToast();
     const [isPending, startTransition] = useTransition();
     const itemCount = cart?.items?.length ?? 0;
     const itemText = itemCount === 0 ? '0 items' : itemCount > 1 ? `${itemCount} items` : '1 item';
+
+    const handleCheckout = () => {
+        if (!session?.user) {
+            toast({
+                title: "Thanks for your business!",
+                description: "Please sign in before continuing. After signing in, your items will be in your Cart. Thanks Again!",
+                variant: "default",
+                // duration: 5000,
+            });
+            setTimeout(() => {
+                router.push("/sign-in");
+            }, 5000);
+            return;
+        }
+        startTransition(() => router.push("/shipping"));
+    };
+
+
 
     return (<>
         <h1 className="py-4 h2-bold">Shopping Cart has {itemText} </h1>
@@ -129,11 +148,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                 <div className="mt-2 text-sm text-gray-600">Free shipping on orders above $100!</div>
                                 <div className="text-sm text-gray-600">Review your items before checking out!</div>
                             </div>
-                            <Button
-                                onClick={() => startTransition(() => router.push('/shipping'))}
-                                className="w-full"
-                                disabled={isPending}
-                            >
+                            <Button onClick={handleCheckout} className="w-full" disabled={isPending}>
                                 {isPending ? (
                                     <Loader className="animate-spin w-4 h-4" />
                                 ) : (

@@ -26,6 +26,8 @@ model Product {
   sku            String      @unique // ✅ Ensures SKU uniqueness
   createdAt      DateTime    @default(now()) @db.Timestamp(6)
   isDiscontinued Boolean     @default(false)
+  isDiscounted   Boolean     @default(false) // New column for discount eligibility
+  discountRate   Int? // New column for discount percentage (nullable)
   orderItems     OrderItem[] // ✅ Renamed from "OrderItem" for better consistency
   reviews        Review[] // ✅ Renamed from "Review" for better consistency
 

@@ -8,6 +8,7 @@ import { StarIcon } from "lucide-react";
 
 
 
+
 export async function generateMetadata(props: {
     searchParams: Promise<{
         q: string;
@@ -229,6 +230,7 @@ const SearchPage = async (props: {
                     </div>
                 </div>
 
+
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                     {products.data.length === 0 && (<div className="flex justify-center items-center h-[100%] md:ml-40">
                         <div className="text-center">
@@ -239,13 +241,19 @@ const SearchPage = async (props: {
                         </div>
                     </div>)}
                     {products.data.map((product) => (
-                        <ProductCard key={product.id} product={{ ...product, costPrice: Number(product.costPrice), rating: Number(product.rating), price: Number(product.price) }}>
-                            {/* PRODUCT CARD */}
-                        </ProductCard>
-                    ))}
+                        <ProductCard key={product.id} product={{
+                            ...product,
+                            costPrice: Number(product.costPrice),
+                            discountRate: Number(product.discountRate),
+                            isDiscounted: product.isDiscounted,
+                            price: Number(product.price),
+                            rating: Number(product.rating), // Convert rating to number
+                        }} />
 
+                        // </ProductCard>
+                    ))}
                     {products!.totalPages! > 1 && (
-                        <Pagination page={page} totalPages={products!.totalPages} />
+                        <Pagination page={Number(page)} totalPages={products!.totalPages} />
                     )}
                 </div>
             </div>

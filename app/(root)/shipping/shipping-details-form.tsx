@@ -42,6 +42,7 @@ const ShippingDetailsForm = ({ address }: { address: ShippingAddress }) => {
                     title: 'Success',
                     description: 'Shipping address updated successfully',
                     variant: 'default',
+                    duration: 1500,
                 });
                 router.push('/payment-method');
             } else {

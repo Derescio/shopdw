@@ -7,12 +7,15 @@ import { Product } from "../../../types";
 import Rating from './rating';
 
 const ProductCard = ({ product }: { product: Product }) => {
+    // console.log(product.isDiscounted)
+    const discountedPrice = product.price * (1 - product.discountRate / 100)
     return (<Card className="w-full max-w-sm">
 
         <CardHeader className="p-0 items-center">
             <Link href={`/product/${product.slug}`}>
                 <Image src={product.images[0]} alt={product.name} width={300} height={300} priority={true} />
             </Link>
+
         </CardHeader>
 
         <CardContent className="p-4">
@@ -22,7 +25,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             </Link>
             <div className="flex flex-between gap-4">
                 <p className="text-gray-500">{product.category}</p>
-                {product.stock > 0 ? <ProductPrice value={Number(product.costPrice)} /> : <p className="text-red-500">Out of Stock</p>}
+                {product.stock > 0 ? <ProductPrice value={!product.isDiscounted ? discountedPrice : Number(product.price)} /> : <p className="text-red-500">Out of Stock</p>}
             </div>
             <Rating value={Number(product.rating)} />
         </CardContent>

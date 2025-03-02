@@ -23,7 +23,9 @@ const UpdateProductPage = async (props: { params: Promise<{ id: string; }> }) =>
                     ...product,
                     price: Number(product.price),
                     costPrice: Number(product.costPrice),
-                    rating: Number(product.rating)
+                    rating: Number(product.rating),
+                    isDiscounted: Boolean(product.isDiscounted),
+                    discountRate: Number(product.discountRate),
                 }}
                 productId={product.id}
             />
