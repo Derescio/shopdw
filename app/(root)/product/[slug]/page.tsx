@@ -12,6 +12,8 @@ import ReviewList from "./review-list";
 import { auth } from "@/auth";
 import Rating from "@/components/shared/product/rating";
 import { formatCurrency } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export const metadata: Metadata = {
     title: 'Products Page',
@@ -119,6 +121,11 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
                                 )}
                             </CardContent>
                         </Card>
+                        <Link href="/" className="mt-4">
+                            <Button className="w-full mt-4 bg-green-100 text-black px-5 py-2" variant='outline'>
+                                Continue Shopping
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </section>

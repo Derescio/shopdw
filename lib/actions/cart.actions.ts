@@ -71,7 +71,7 @@ export async function addItemToCart(data: CartItem) {
             revalidatePath(`/product/${product.slug}`);
             return {
                 success: true,
-                message: `${product.name} added to the cart`,
+                message: ``,
             };
         } else {
             //Check if the item is already in the cart

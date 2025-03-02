@@ -34,7 +34,7 @@ const AddToCart = ({
 
 
             toast({
-                description: `${item.name} ${res.message}`,
+                description: `${item.name} added to cart`,
                 action: (
                     <ToastAction
                         className='bg-primary text-white hover:bg-gray-800'
@@ -44,6 +44,7 @@ const AddToCart = ({
                         Go to cart
                     </ToastAction>
                 ),
+                duration: 1500,
             })
         });
     };
