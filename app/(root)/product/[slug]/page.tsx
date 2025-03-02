@@ -33,7 +33,7 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
         notFound();
     }
     const discountedPrice = Number(
-        (!product.isDiscounted
+        (product.isDiscounted
             ? Number(product.price) * (1 - (product.discountRate ?? 0) / 100)
             : Number(product.price)
         ).toFixed(2)
@@ -62,10 +62,10 @@ const ProductPage = async (props: { params: Promise<{ slug: string }> }) => {
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                                 <ProductPrice
                                     value={discountedPrice}
-                                    className="w-24 rounded-full bg-green-100 text-green-700 px-5 py-2"
+                                    className="w-30 rounded-full bg-green-100 text-green-700 px-5 py-2"
                                 />
                                 {(product.discountRate ?? 0) > 0 ? (
-                                    <span className="text-md line-through text-gray-500 ">
+                                    <span className="text-md line-through font-semibold  w-24 rounded-full bg-red-400 text-black px-5 py-2">
                                         {formatCurrency(Number(product.price))}
                                     </span>
                                 ) : ''
