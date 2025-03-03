@@ -68,6 +68,9 @@ type OrderInformationProps = {
     order: Order;
 };
 
+
+
+
 export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
     console.log(order)
     return (
@@ -114,8 +117,8 @@ export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
                                             className='rounded'
                                             src={
                                                 item.image.startsWith('/')
-                                                    ? item.image
-                                                    : `${process.env.NEXT_PUBLIC_SERVER_URL}${item.image}`
+                                                    ? `${process.env.NEXT_PUBLIC_SERVER_URL}${item.image}`
+                                                    : item.image
                                             }
                                         />
                                     </Column>
