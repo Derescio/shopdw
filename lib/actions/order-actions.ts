@@ -12,7 +12,7 @@ import { revalidatePath } from 'next/cache';
 import { paypal } from '../paypal';
 import { PAGE_SIZE } from '../constatnts';
 import { Prisma } from '@prisma/client';
-import { sendPurchaseReceipt } from '@/email';
+// import { sendPurchaseReceipt } from '@/email';
 import { sendOrderConfirmationEmail } from '@/email/sendConfirmEmail';
 
 
