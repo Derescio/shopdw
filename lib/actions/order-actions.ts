@@ -13,6 +13,7 @@ import { paypal } from '../paypal';
 import { PAGE_SIZE } from '../constatnts';
 import { Prisma } from '@prisma/client';
 import { sendPurchaseReceipt } from '@/email';
+import { sendOrderConfirmationEmail } from '@/email/sendConfirmEmail';
 
 
 // Utility function to handle errors
@@ -259,6 +260,7 @@ export async function updateOrderToPaid({
     orderId: string;
     paymentResult?: PaymentResult;
 }): Promise<void> {
+
     const order = await fetchOrderById(orderId);
 
     if (order.isPaid) throw new Error('Order is already paid');
@@ -286,6 +288,7 @@ export async function updateOrderToPaid({
 
     // Get the updated order after the transaction
     const updatedOrder = await prisma.order.findFirst({
+
         where: {
             id: orderId,
         },
@@ -298,14 +301,16 @@ export async function updateOrderToPaid({
     if (!updatedOrder) {
         throw new Error('Order not found');
     }
-    sendPurchaseReceipt({
+    await sendOrderConfirmationEmail({
         order: {
             ...updatedOrder,
             orderItems: updatedOrder.orderItems.map(item => ({
                 ...item,
                 totalPrice: Number(item.totalPrice),
                 unitPrice: Number(item.unitPrice),
+
             })),
+
             shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
             paymentResult: updatedOrder.paymentResult as PaymentResult,
             itemsPrice: Number(updatedOrder.itemsPrice),
@@ -314,7 +319,27 @@ export async function updateOrderToPaid({
             totalPrice: Number(updatedOrder.totalPrice),
         },
     });
+    // sendPurchaseReceipt({
+    //     order: {
+    //         ...updatedOrder,
+    //         orderItems: updatedOrder.orderItems.map(item => ({
+    //             ...item,
+    //             totalPrice: Number(item.totalPrice),
+    //             unitPrice: Number(item.unitPrice),
+
+    //         })),
+
+    //         shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+    //         paymentResult: updatedOrder.paymentResult as PaymentResult,
+    //         itemsPrice: Number(updatedOrder.itemsPrice),
+    //         shippingPrice: Number(updatedOrder.shippingPrice),
+    //         taxPrice: Number(updatedOrder.taxPrice),
+    //         totalPrice: Number(updatedOrder.totalPrice),
+    //     },
+    // });
 };
+
+
 
 
 export async function updateOrderToPaidByCOD(orderId: string): Promise<{ success: boolean, message: string }> {
