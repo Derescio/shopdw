@@ -12,8 +12,7 @@ import { revalidatePath } from 'next/cache';
 import { paypal } from '../paypal';
 import { PAGE_SIZE } from '../constatnts';
 import { Prisma } from '@prisma/client';
-// import { sendPurchaseReceipt } from '@/email';
-import { sendOrderConfirmationEmail } from '@/email/sendConfirmEmail';
+import { sendPurchaseReceipt } from '@/email';
 
 
 // Utility function to handle errors
@@ -301,7 +300,8 @@ export async function updateOrderToPaid({
     if (!updatedOrder) {
         throw new Error('Order not found');
     }
-    await sendOrderConfirmationEmail({
+
+    sendPurchaseReceipt({
         order: {
             ...updatedOrder,
             orderItems: updatedOrder.orderItems.map(item => ({
@@ -319,24 +319,6 @@ export async function updateOrderToPaid({
             totalPrice: Number(updatedOrder.totalPrice),
         },
     });
-    // sendPurchaseReceipt({
-    //     order: {
-    //         ...updatedOrder,
-    //         orderItems: updatedOrder.orderItems.map(item => ({
-    //             ...item,
-    //             totalPrice: Number(item.totalPrice),
-    //             unitPrice: Number(item.unitPrice),
-
-    //         })),
-
-    //         shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
-    //         paymentResult: updatedOrder.paymentResult as PaymentResult,
-    //         itemsPrice: Number(updatedOrder.itemsPrice),
-    //         shippingPrice: Number(updatedOrder.shippingPrice),
-    //         taxPrice: Number(updatedOrder.taxPrice),
-    //         totalPrice: Number(updatedOrder.totalPrice),
-    //     },
-    // });
 };
 
 
