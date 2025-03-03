@@ -1,12 +1,13 @@
 import { Resend } from 'resend';
 import { Order } from '@/types';
+import { SENDER_EMAIL } from '@/lib/constatnts';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOrderConfirmationEmail = async ({ order }: { order: Order }) => {
     try {
         const response = await resend.emails.send({
-            from: 'yourstore@example.com',
+            from: `${SENDER_EMAIL}`,
             to: order.user.email,
             subject: `Order Confirmation - ${order.id}`,
             html: `
