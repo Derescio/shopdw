@@ -7,33 +7,51 @@ import { formatCurrency, formatDateTime, formatNumberIntl } from "@/lib/utils";
 import { BadgeDollarSign, Barcode, CreditCard, PersonStanding } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
-import Charts from "./charts";
+import { MonthlySalesChart } from "@/components/admin/charts/monthly-sales";
+import { ProfitBreakdownChart } from "@/components/admin/charts/profit-breakdown";
+import { ProductProfitChart } from "@/components/admin/charts/product-profits";
+import { Suspense } from "react";
+import { ErrorBoundary } from "@/components/admin/charts/error-boundary";
+import { ChartLoading } from "@/components/admin/charts/chart-loading";
+import { RevenueTrendChart } from "@/components/admin/charts/revenue-trend";
 
 export const metadata: Metadata = {
     title: 'Admin Dashboard',
     description: 'Admin Overview Page',
 };
 
-
-
-
 const AdminOverviewPage = async () => {
+
     const session = await auth();
     if (session?.user?.role !== 'admin') {
         throw new Error('Unauthorized Access. Please Go back');
     }
+
     const summary = await getOrderSummary();
-    //console.log(summary)
-    console.log('Total Revenue:', summary.totalRevenue);  // $3,354.32
-    console.log('Total Profit:', summary.totalProfit);    // $1,009.85
-    console.log('Valid Sales:', summary.orderCount);     // 16
+
+    const revenueTrendData = summary.salesData.map(monthData => ({
+        name: monthData.month,
+        value: monthData.totalSales,
+        users: summary.userCount, // Total users (modify if you have per-month user data)
+        sales: summary.orderCount // Total sales (modify if you have per-month sales count)
+    }));
+
+
+
+
+    const profitData = [
+        { name: 'Revenue', value: summary.result.totalRevenue },
+        { name: 'Costs', value: summary.result.totalCost },
+        { name: 'Profit', value: summary.result.profit },
+    ];
 
 
     return (<>
-        <div className="space-y-2">
+        <div className="space-y-6">
             <h1 className="h2-bold">
                 Sales Overview Page
             </h1>
+            {/* Header Cards */}
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
                 {/* Revenue Card */}
                 <Card>
@@ -43,7 +61,7 @@ const AdminOverviewPage = async () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {formatCurrency(summary.totalRevenue.toString())}
+                            {formatCurrency(summary.totalSales.toString())}
                         </div>
                     </CardContent>
                 </Card>
@@ -54,7 +72,7 @@ const AdminOverviewPage = async () => {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">
-                            {formatCurrency(summary.totalProfit.toString())}
+                            {formatCurrency(summary.result.profit.toString())}
                         </div>
                     </CardContent>
                 </Card>
@@ -81,6 +99,7 @@ const AdminOverviewPage = async () => {
                         </div>
                     </CardContent>
                 </Card>
+
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Products</CardTitle>
@@ -93,63 +112,93 @@ const AdminOverviewPage = async () => {
                     </CardContent>
                 </Card>
             </div>
-            {/* Chart div, 7 colums. 4 columns for first chart and three for the other */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
-                        <CardTitle className="text-sm font-medium">Sales Chart</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Charts data={{
-                            salesData: summary.salesData,
-                        }} />
-                    </CardContent>
+
+            {/* Chart div, 3 colums. 4 columns for first chart and three for the other */}
+            <div className="grid  grid-cols  gap-4 md:grid-cols-2 lg:grid-cols-3">
+
+                <Card className="p-6">
+                    <div className="mb-4">
+                        <h3 className="font-semibold">Monthly Sales Trend</h3>
+                        <p className="text-sm text-muted-foreground">Paid orders only</p>
+                    </div>
+                    <MonthlySalesChart data={summary.salesData} />
                 </Card>
-                <Card className="col-span-3">
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Revenue Chart</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>
-                                        Buyer
-                                    </TableHead>
-                                    <TableHead>
-                                        Date
-                                    </TableHead>
-                                    <TableHead>
-                                        Total
-                                    </TableHead>
-                                    <TableHead>
-                                        Actions
-                                    </TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {summary.latestOrders.map((sale) => (
-                                    <TableRow key={sale.id}>
-                                        <TableCell>{sale.user.name}</TableCell>
-                                        <TableCell>{formatDateTime(sale.createdAt).dateTime}</TableCell>
-                                        <TableCell>{formatCurrency(sale.totalPrice.toString())}</TableCell>
-                                        <TableCell>
-                                            <Link href={`/order/${sale.id}`}>
-                                                <Button size="sm" variant="link">
-                                                    View
-                                                </Button>
-                                            </Link>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </CardContent>
+
+                <Card className="p-6">
+                    <div className="mb-4">
+                        <h3 className="font-semibold">Profit Composition</h3>
+                        <p className="text-sm text-muted-foreground">Revenue vs Costs</p>
+                    </div>
+                    <ErrorBoundary
+                        fallback={
+                            <div className="text-destructive p-4">
+                                Failed to load profit breakdown data
+                            </div>
+                        }
+                    >
+                        <Suspense fallback={<ChartLoading />}>
+                            <ProfitBreakdownChart data={profitData} />
+                        </Suspense>
+                    </ErrorBoundary>
                 </Card>
+
+                <Card className="p-6 col-span-2">
+                    <div className="mb-4">
+                        <h3 className="font-semibold">Product Performance</h3>
+                        <p className="text-sm text-muted-foreground">Top selling items</p>
+                    </div>
+                    <ErrorBoundary>
+                        <Suspense fallback={<ChartLoading />}>
+                            <ProductProfitChart data={summary.skuProfits} />
+                        </Suspense>
+                    </ErrorBoundary>
+                </Card>
+                <RevenueTrendChart data={revenueTrendData} />
             </div>
 
-        </div>
+            <Card className="col-span-3">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Revenue Chart</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>
+                                    Buyer
+                                </TableHead>
+                                <TableHead>
+                                    Date
+                                </TableHead>
+                                <TableHead>
+                                    Total
+                                </TableHead>
+                                <TableHead>
+                                    Actions
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {summary.latestOrders.map((sale) => (
+                                <TableRow key={sale.id}>
+                                    <TableCell>{sale.user.name}</TableCell>
+                                    <TableCell>{formatDateTime(sale.createdAt).dateTime}</TableCell>
+                                    <TableCell>{formatCurrency(sale.totalPrice.toString())}</TableCell>
+                                    <TableCell>
+                                        <Link href={`/order/${sale.id}`}>
+                                            <Button size="sm" variant="link">
+                                                View
+                                            </Button>
+                                        </Link>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
 
+        </div>
     </>);
 }
 

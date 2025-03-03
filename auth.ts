@@ -103,11 +103,6 @@ export const config = {
             }
             return token;
         },
-
-
-
-
-        // async jwt({ token, user, trigger, session }: any) {
         //     // Assign user fields to token
         //     if (user) {
         //         token.id = user.id;
@@ -172,10 +167,7 @@ export const config = {
             // console.log(pathname)
             // const { pathname } = request?.nextUrl?.pathname;
             if (!auth && excludedPaths.some((p) => p.test(pathname))) return false;
-            //Check if user is not authenticated and the path is  excluded
-            // if (!auth?.user && !excludedPaths.some(pattern => pattern.test(pathname))) {
-            //     return false;
-            // }
+
 
             // Check for session cart cookie
             if (!request.cookies.get('sessionCartId')) {

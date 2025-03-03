@@ -64,6 +64,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --chart-primary: 136, 132, 216;
+    --chart-secondary: 130, 202, 157;
+    --chart-accent: 255, 198, 88;
+    --chart-error: 239, 68, 68;
   }
 
   .dark {
@@ -129,6 +133,7 @@ html.dark .upload-field .text-white {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

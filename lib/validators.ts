@@ -124,6 +124,7 @@ export const insertOrderSchema = z.object({
     shippingAddress: shippingAddressSchema,
 });
 
+
 export const insertOrderItemSchema = z.object({
     productId: z.string(),
     slug: z.string(),
