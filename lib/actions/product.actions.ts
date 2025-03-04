@@ -7,6 +7,7 @@ import { formatError, prismaToJSObject } from '../utils';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
+import { track } from '@vercel/analytics/server';
 
 
 //Get latest product
@@ -28,6 +29,7 @@ export const getLatestProducts = async () => {
 };
 
 export async function getProductById(productId: string) {
+    await track('view_product', { productId });
     const data = await prisma.product.findFirst({
         where: { id: productId },
     });
