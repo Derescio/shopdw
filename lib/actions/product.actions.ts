@@ -29,7 +29,7 @@ export const getLatestProducts = async () => {
 };
 
 export async function getProductById(productId: string) {
-    await track('view_product', { productId });
+    await track('view_product', { productId: productId });
     const data = await prisma.product.findFirst({
         where: { id: productId },
     });
