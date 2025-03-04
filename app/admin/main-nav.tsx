@@ -25,10 +25,8 @@ const links = [
     },
 ];
 
-const MainNav = ({
-    className,
-    ...props
-}: React.HTMLAttributes<HTMLElement>) => {
+const MainNav = ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
+
     const pathname = usePathname();
 
     return <nav

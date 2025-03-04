@@ -25,27 +25,24 @@ export const ProfitBreakdownChart = ({ data }: {
                         outerRadius={80}
                         paddingAngle={5}
                         dataKey="value"
-                        nameKey="name"  // Connect names to the pie segments
+                        nameKey="name"   // Connect names to the pie segments
                     >
                         {data.map((entry, index) => (
                             <Cell
-                                key={`cell-${entry.name}`}
-                                fill={COLORS[index % COLORS.length]}
-                                name={entry.name}  // Explicitly provide names
+                                key={`cell-${index}`}
+                                fill={[
+                                    "rgb(155, 135, 245)",
+                                    "rgb(101, 183, 243)",
+                                    "rgb(76, 175, 147)",
+                                ][index % 3]}
                             />
                         ))}
                     </Pie>
-                    <Tooltip
-                        contentStyle={{
-                            backgroundColor: 'hsl(var(--background))',
-                            borderColor: 'rgb(var(--chart-primary))',
-                            borderRadius: '8px',
-                        }}
-                        formatter={(value) => [`$${value}`, 'Amount']}
-                    />
+                    <Tooltip />
                     <CustomLegend />
                 </PieChart>
             </ResponsiveContainer>
         </Suspense>
     </ErrorBoundary>
+
 );

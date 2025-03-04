@@ -36,9 +36,6 @@ const AdminOverviewPage = async () => {
         sales: summary.orderCount // Total sales (modify if you have per-month sales count)
     }));
 
-
-
-
     const profitData = [
         { name: 'Revenue', value: summary.result.totalRevenue },
         { name: 'Costs', value: summary.result.totalCost },
@@ -114,9 +111,9 @@ const AdminOverviewPage = async () => {
             </div>
 
             {/* Chart div, 3 colums. 4 columns for first chart and three for the other */}
-            <div className="grid  grid-cols  gap-4 md:grid-cols-2 lg:grid-cols-3">
-
-                <Card className="p-6">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+                {/* Monthly Sales Trend */}
+                <Card className="p-6 col-span-2 ">
                     <div className="mb-4">
                         <h3 className="font-semibold">Monthly Sales Trend</h3>
                         <p className="text-sm text-muted-foreground">Paid orders only</p>
@@ -124,25 +121,21 @@ const AdminOverviewPage = async () => {
                     <MonthlySalesChart data={summary.salesData} />
                 </Card>
 
-                <Card className="p-6">
+                {/* Profit Composition */}
+                <Card className="p-6 col-span-1 md:col-span-1 lg:col-span-2">
                     <div className="mb-4">
                         <h3 className="font-semibold">Profit Composition</h3>
                         <p className="text-sm text-muted-foreground">Revenue vs Costs</p>
                     </div>
-                    <ErrorBoundary
-                        fallback={
-                            <div className="text-destructive p-4">
-                                Failed to load profit breakdown data
-                            </div>
-                        }
-                    >
+                    <ErrorBoundary fallback={<div className="text-destructive p-4">Failed to load profit breakdown data</div>}>
                         <Suspense fallback={<ChartLoading />}>
                             <ProfitBreakdownChart data={profitData} />
                         </Suspense>
                     </ErrorBoundary>
                 </Card>
 
-                <Card className="p-6 col-span-2">
+                {/* Product Performance */}
+                <Card className="p-6 col-span-2 md:col-span-2 lg:col-span-4 xl:col-span-5">
                     <div className="mb-4">
                         <h3 className="font-semibold">Product Performance</h3>
                         <p className="text-sm text-muted-foreground">Top selling items</p>
@@ -153,10 +146,10 @@ const AdminOverviewPage = async () => {
                         </Suspense>
                     </ErrorBoundary>
                 </Card>
-                <RevenueTrendChart data={revenueTrendData} />
             </div>
 
-            <Card className="col-span-3">
+            <RevenueTrendChart data={revenueTrendData} />
+            {/* <Card className="col-span-3">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Revenue Chart</CardTitle>
                 </CardHeader>
@@ -195,8 +188,10 @@ const AdminOverviewPage = async () => {
                             ))}
                         </TableBody>
                     </Table>
+                   
+
                 </CardContent>
-            </Card>
+            </Card> */}
 
         </div>
     </>);

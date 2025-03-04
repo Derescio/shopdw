@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import '@/assets/styles/globals.css'
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constatnts";
+import { Analytics } from "@vercel/analytics/react"
 
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/toaster";
@@ -34,6 +35,7 @@ export default function RootLayout({
         >
           {children}
           <Toaster />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

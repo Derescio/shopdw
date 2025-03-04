@@ -22,17 +22,19 @@ export default async function AdminLayout({
         <>
             <div className='flex flex-col mt-6'>
                 <div className='border-b container mx-auto border-b-slate-700 dark:border-b-slate-400'>
-                    <div className='flex h-16 items-center px-4'>
+
+                    <div className="flex flex-col md:flex-row justify-between w-full md:w-auto">
                         <Link href="/" className='w-22'>
-                            <Image src={"/images/SHOPDDWLogo.png"} width={64} height={64} alt={APP_NAME} className="rounded-full mb-6" />
+                            <Image src={"/images/SHOPDDWLogo.png"} width={64} height={64} alt={APP_NAME} className="hidden md:block md:rounded-full md:mb-6  " />
                         </Link>
+                        <span> <MainNav className='mx-6 ml-4 md:py-8' /></span>
+                        <span className="flex flex-col md:items-center w-full md:w-auto">
 
-                        <MainNav className='mx-6' />
-
-                        <div className="ml-auto items-center flex space-x-4 ">
-                            <AdminSearch />
-                            <Menu />
-                        </div>
+                            <div className="flex items-center gap-x-2 md:ml-auto md:items-center md:flex md:space-x-4 mb-4 ml-2 md:py-5">
+                                <AdminSearch />
+                                <Menu />
+                            </div>
+                        </span>
                     </div>
                 </div>
                 <div className="flex-1 space-y-4 p-8 pt-6 container mx-auto">

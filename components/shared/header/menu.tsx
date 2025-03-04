@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
 import ModeToggle from "./mode-toglle";
-import { EllipsisVertical, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
+import { RxHamburgerMenu } from "react-icons/rx";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import UserButton from "./user-button";
 
-const Menu = () => {
+
+const Menu = async () => {
+
     return (
         <>
             <div className="flex justify-end gap-3">
@@ -27,11 +30,11 @@ const Menu = () => {
                 <nav className="md:hidden">
                     <Button asChild variant='outline' >
                         <Sheet>
-                            Open
-                            <span className="sr-only">Open Menu</span>
+                            {/* Open
+                            <span className="sr-only">Open Menu</span> */}
                             <SheetTrigger className="align-middle">
 
-                                <EllipsisVertical size={24} />
+                                <RxHamburgerMenu size={24} />
 
                             </SheetTrigger>
                             <SheetContent className=" flex flex-col items-start">
