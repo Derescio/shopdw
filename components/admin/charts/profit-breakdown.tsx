@@ -6,7 +6,7 @@ import { ChartLoading } from '@/components/admin/charts/chart-loading';
 import { ErrorBoundary } from '@/components/admin/charts/error-boundary';
 import { Suspense } from 'react';
 
-const COLORS = ['rgb(var(--chart-primary))', 'rgb(var(--chart-secondary))', 'rgb(var(--chart-accent))'];
+//const COLORS = ['rgb(var(--chart-primary))', 'rgb(var(--chart-secondary))', 'rgb(var(--chart-accent))'];
 
 export const ProfitBreakdownChart = ({ data }: {
     data: { name: string; value: number }[]
